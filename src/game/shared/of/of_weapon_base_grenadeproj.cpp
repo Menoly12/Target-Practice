@@ -470,7 +470,7 @@ void COFWeaponBaseGrenadeProj::InitGrenade(const Vector &vecSpeed, const Angular
 
 void COFWeaponBaseGrenadeProj::InitGrenade(const Vector &vecSpeed, const AngularImpulse &angleImpulse, CBaseCombatCharacter *pPlayer, int iDamage, float flDamageRadius)
 {
-	SetOwnerEntity(this);
+	SetOwnerEntity(NULL);
 	SetThrower(pPlayer);
 
 	m_vInitialVelocity = vecSpeed;

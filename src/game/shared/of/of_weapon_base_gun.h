@@ -39,6 +39,7 @@ class COFWeaponBaseGun: public COFWeaponBase
 	//virtual bool HasLastShotCritical();
 	
 	virtual void DoFireEffects();
+	virtual void CalcPunchAngle(COFPlayer *pPlayer);
 
 	// OFTODO: Placeholder for now, look into what makes this be false sometimes
 	virtual bool ShouldDoMuzzleFlash() { return true; };
@@ -46,10 +47,10 @@ class COFWeaponBaseGun: public COFWeaponBase
 	virtual int GetWeaponProjectileType() const;
 
 	virtual CBaseEntity *FireProjectile( COFPlayer *pPlayer );
-	/*
-	virtual void RemoveProjectileAmmo( CTFPlayer *pPlayer );
-	virtual void ModifyProjectile( CBaseEntity *pEnt );
-	*/
+	
+	virtual void RemoveAmmo( COFPlayer *pPlayer ); // renamed from RemoveProjectileAmmo
+	//virtual void ModifyProjectile( CBaseEntity *pEnt );
+
 	virtual void FireBullet( COFPlayer *pPlayer );
 	
 	// OFTODO: Figure out what the types are

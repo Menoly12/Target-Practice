@@ -121,8 +121,8 @@ void COFWeaponBaseGun::PrimaryAttack()
 	m_flNextPrimaryAttack += GetOFWpnData().m_WeaponModeInfo[m_iWeaponMode].m_flTimeFireDelay;
 	DevMsg("Next attack %f\n", GetOFWpnData().m_WeaponModeInfo[m_iWeaponMode].m_flTimeFireDelay);
 	
-	m_iClip1 -= GetAmmoPerShot();
-	
+	//m_iClip1 -= GetAmmoPerShot();
+
 	DoFireEffects();
 	
 	CalcIsAttackCritical();
@@ -241,7 +241,37 @@ CBaseEntity *COFWeaponBaseGun::FireProjectile( COFPlayer *pPlayer )
 	if( ShouldPlayFireAnim() )
 		pPlayer->DoAnimationEvent( PLAYERANIMEVENT_ATTACK_PRIMARY );
 	
+	RemoveAmmo(pPlayer);
+
+	//m_flLastFireTime = gpGlobals->curtime;
+	m_iConsecutiveShots++;
+
+	DoFireEffects();
+
+	CalcPunchAngle(pPlayer);
+
 	return pProjectile;
+}
+
+void COFWeaponBaseGun::RemoveAmmo(COFPlayer *pPlayer)
+{
+	if (m_iClip1 != -1)
+	{
+		m_iClip1 -= GetAmmoPerShot();
+	}
+	else
+	{
+		if (m_iWeaponMode == OF_WEAPON_MODE_PRIMARY)
+		{
+			pPlayer->RemoveAmmo(GetAmmoPerShot(), m_iPrimaryAmmoType);
+		}
+		else
+		{
+			pPlayer->RemoveAmmo(GetAmmoPerShot(), m_iSecondaryAmmoType);
+		}
+		// no non-econ weapon gives you ammo on shooting someone..
+		// pPlayer->GiveAmmo()
+	}
 }
 
 // OFSTATUS: ~50% comlpete, there's some functions before FX_FireBullets 
@@ -308,9 +338,9 @@ CBaseEntity *COFWeaponBaseGun::FirePipeBomb(COFPlayer *pPlayer, int iType)
 			// ...
 		//}
 		// ---------------------------------
-		// pPipe->0x525 = IsAttackCritical();
+		pPipe->SetCritical(IsAttackCritical());
 
-		//pPipe->SetLauncher(this);
+		pPipe->SetLauncher(this);
 
 		//GetCustomProjectileModel(); - ignore
 	}
@@ -344,6 +374,21 @@ void COFWeaponBaseGun::DoFireEffects()
 
 	if( ShouldDoMuzzleFlash() )
 		pPlayer->DoMuzzleFlash();
+}
+
+void COFWeaponBaseGun::CalcPunchAngle(COFPlayer *pPlayer)
+{
+	if (!pPlayer) return;
+
+	QAngle angle = pPlayer->GetPunchAngle();
+	float flPunchAngle = GetOFWpnData().m_WeaponModeInfo[m_iWeaponMode].m_flPunchAngle;
+
+	if (0.0 < flPunchAngle)
+	{
+		int iRandom = SharedRandomInt("ShotgunPunchAngle", (flPunchAngle - 1.0), (flPunchAngle + 1.0));
+		angle.x -= iRandom;
+		pPlayer->SetPunchAngle(angle);
+	}
 }
 
 //OFSTATUS: INCOMPLETE
