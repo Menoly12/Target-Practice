@@ -85,7 +85,7 @@ void COFWeaponBaseGun::PrimaryAttack()
 	*/
 	
 	// Abort if we have less than 1 bullet in the clip
-	if( Clip1() < 1 )
+	if( Clip1() < 1 && Clip1() != -1)
 		return;
 	
 	/*

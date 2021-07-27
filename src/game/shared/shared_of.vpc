@@ -42,6 +42,8 @@ $Project
 			$File	"$SHARED/of/of_weapon_smg.h"
 			$File	"$SHARED/of/of_weapon_grenadelauncher.cpp"
 			$File	"$SHARED/of/of_weapon_grenadelauncher.h"
+			$File	"$SHARED/of/of_weapon_minigun.cpp"
+			$File	"$SHARED/of/of_weapon_minigun.h"
 			$File	"$SHARED/of/of_weapon_grenadeproj_pipebomb.cpp"
 			$File	"$SHARED/of/of_weapon_grenadeproj_pipebomb.h"
 			$File	"$SHARED/of/of_player_shared.cpp"

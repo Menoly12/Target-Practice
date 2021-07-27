@@ -175,6 +175,7 @@ LINK_ENTITY_TO_CLASS( tf_weapon_base, COFWeaponBase );
 extern ConVar cl_flipviewmodels;
 
 #endif
+
 ConVar tf_weapon_criticals( "tf_weapon_criticals", "1", FCVAR_NOTIFY | FCVAR_REPLICATED, "");
 
 // ----------------------------------------------------------------------------- //
@@ -193,6 +194,7 @@ COFWeaponBase::COFWeaponBase()
 	field_0x6cc = 0;
 	m_iCritSeed = -1;
 	m_flCritDuration = 0;
+	m_flLastCritCheckTime = 0.0;
 	m_iLastCritCheck = 0;
 	m_bAttackCritical = false;
 	m_bWeaponReset = false;
@@ -879,6 +881,28 @@ const char *COFWeaponBase::GetWorldModel() const
 	return CBaseCombatWeapon::GetWorldModel();
 }
 
+#ifdef CLIENT_DLL
+//OFSTATUS: COMPLETE
+// cutting this down at it's merged with a bunch of econ stuff
+C_BaseEntity *COFWeaponBase::GetWeaponForEffect()
+{
+	COFPlayer *pPlayer = GetOFPlayerOwner();
+
+	if (pPlayer) return pPlayer->GetViewModel();
+
+	return this;
+}
+
+bool COFWeaponBase::UsingViewModel()
+{
+	COFPlayer *pPlayer = GetOFPlayerOwner();
+
+	bool bUsingViewModel = pPlayer && pPlayer->InFirstPersonView() && !pPlayer->ShouldDrawThisPlayer();
+
+	return bUsingViewModel;
+}
+#endif
+
 //OFSTATUS: COMPLETE
 int COFWeaponBase::GetDefaultClip1() const
 {
@@ -1284,6 +1308,10 @@ bool COFWeaponBase::CalcIsAttackCriticalHelper()
 
 	if (bRapidFireCrits)
 	{
+
+		if (gpGlobals->curtime < m_flLastCritCheckTime + 1.0) return false;
+		m_flLastCritCheckTime = gpGlobals->curtime;
+
 		// muliply by the player's damage done over time
 		float flCritMultCalc = clamp(TF_WEAPON_CRIT_CHANCE_RAPID * flCritMult, 0.01f, 0.99f);
 

@@ -292,6 +292,8 @@ void COFPlayer::SetSpeedOF()
 	// this will never happen as the game will just crash before this can even execute
 	//if (!OFGameRules()) SetMaxSpeed(0.0);
 
+	if (!OFGameRules()) return;
+
 	// field_0xb0c = m_afPhysicsFlags
 	if (IsObserver())
 	{

@@ -220,6 +220,10 @@ class COFWeaponBase : public CBaseCombatWeapon, IHasOwner, public CGameEventList
     virtual const Vector &GetBulletSpread();
     virtual const char *GetViewModel() const;
     virtual const char *GetWorldModel() const override;
+	#ifdef CLIENT_DLL
+	virtual C_BaseEntity *GetWeaponForEffect();
+	virtual bool UsingViewModel();
+	#endif	
     // virtual int GetMaxClip1() const override; // ignore
     virtual int GetDefaultClip1() const override;
     //virtual bool ForceWeaponSwitch() const override; // ignore
@@ -243,7 +247,7 @@ class COFWeaponBase : public CBaseCombatWeapon, IHasOwner, public CGameEventList
     virtual float GetNextSecondaryAttackDelay();
     // probably returns an enum
 	// nope! - cherry
-	virtual int GetCustomDamageType() { return 0; };
+	virtual int GetCustomDamageType() const { return 0; };
 	// energy weapons dont exist, so we can easily trim this
 	virtual bool UsesPrimaryAmmo() { return true; };
 
@@ -402,6 +406,7 @@ protected:
 	float m_flCritDuration;
 	
 	int m_iLastCritCheck;
+	float m_flLastCritCheckTime;
 	bool m_bAttackCritical;
 
 	CNetworkVar( bool, m_bWeaponReset );
