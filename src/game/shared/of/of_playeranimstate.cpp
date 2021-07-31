@@ -128,8 +128,8 @@ void COFPlayerAnimState::DoAnimationEvent( PlayerAnimEvent_t event, int nData )
 
 			// we dont need to check for a bow so just do a check for the rifle
 			COFWeaponBase *pWeapon = m_pOFPlayer->GetActiveOFWeapon();
-			bool bWeaponIsMiniGun = (pWeapon->GetWeaponID() == OF_WEAPON_MINIGUN);
-			bool bWeaponIsSniperRifle = (pWeapon->GetWeaponID() == OF_WEAPON_SNIPERRIFLE);
+			bool bWeaponIsMiniGun = (pWeapon && pWeapon->GetWeaponID() == OF_WEAPON_MINIGUN);
+			bool bWeaponIsSniperRifle = (pWeapon && pWeapon->GetWeaponID() == OF_WEAPON_SNIPERRIFLE);
 
 			if (bWeaponIsMiniGun)
 			{

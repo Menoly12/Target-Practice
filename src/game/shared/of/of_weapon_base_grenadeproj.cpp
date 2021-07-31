@@ -15,6 +15,9 @@
 #include "soundent.h"
 #include "of_fx.h"
 
+extern void SendProxy_Origin(const SendProp *pProp, const void *pStruct, const void *pData, DVariant *pOut, int iElement, int objectID);
+extern void SendProxy_Angles(const SendProp *pProp, const void *pStruct, const void *pData, DVariant *pOut, int iElement, int objectID);
+
 #endif
 
 // ----------------------------------------------------------------------------- //
@@ -36,8 +39,8 @@ BEGIN_NETWORK_TABLE(COFWeaponBaseGrenadeProj, DT_OFWeaponBaseGrenadeProj)
 	SendPropBool(SENDINFO(m_bCritical)),
 	SendPropExclude("DT_BaseEntity", "m_vecOrigin"),
 	SendPropExclude("DT_BaseEntity", "m_angRotation"),
-	SendPropVector(SENDINFO(m_vecOrigin), -1, SPROP_CHANGES_OFTEN | SPROP_COORD_MP_INTEGRAL),
-	SendPropQAngles(SENDINFO(m_angRotation), 6, SPROP_CHANGES_OFTEN),
+	SendPropVector(SENDINFO(m_vecOrigin), -1, SPROP_CHANGES_OFTEN | SPROP_COORD_MP_INTEGRAL, 0.0, HIGH_DEFAULT, SendProxy_Origin),
+	SendPropQAngles(SENDINFO(m_angRotation), 6, SPROP_CHANGES_OFTEN, SendProxy_Angles),
 	SendPropInt(SENDINFO(m_iDeflected), 4),
 	SendPropEHandle(SENDINFO(m_hDeflectOwner)),
 #endif

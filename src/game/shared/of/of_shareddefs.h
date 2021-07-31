@@ -1,6 +1,6 @@
 // ========= Copyright Open Fortress Developers, CC-BY-NC-SA ============
 // Purpose: General definitions
-// Author(s): ficool2, Fenteale, Kay, Ms
+// Author(s): ficool2, Fenteale, Kay, Ms, Cherry!
 //
 
 #include "shareddefs.h"
@@ -51,6 +51,9 @@ enum OF_Collision_Group_t
 #define OF_PLAYER_BUILDABLE_COUNT 6
 
 #define SF_STICKY_MAY_NOT_STICK 1<<10 // makes stickys not stick!
+
+#define CONTENTS_TEAMRED CONTENTS_TEAM1
+#define CONTENTS_TEAMBLUE CONTENTS_TEAM2
 
 enum OFPlayerState
 {

@@ -1,6 +1,6 @@
 // ========= Copyright Open Fortress Developers, CC-BY-NC-SA ============
 // Purpose: General definitions
-// Author(s): ficool2, Fenteale, KaydemonLP, Ms
+// Author(s): ficool2, Fenteale, KaydemonLP, Ms, Cherry!
 //
 
 #include "cbase.h"

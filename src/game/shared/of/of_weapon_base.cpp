@@ -9,6 +9,8 @@
 #include "c_of_player.h"
 #include "c_baseviewmodel.h"
 #include "of_clientmode.h"
+#include "c_te_effect_dispatch.h"
+#include "toolframework_client.h"
 #else
 #include "of_player.h"
 #include "baseviewmodel.h"
@@ -1353,7 +1355,7 @@ bool COFWeaponBase::CalcIsAttackCriticalHelper()
 }
 
 //OFSTATUS: COMPLETE
-void COFWeaponBase::GetProjectileFireSetup(COFPlayer *pPlayer, Vector param_2, Vector *param_3, QAngle *param_4, bool param_5, float param_6)
+void COFWeaponBase::GetProjectileFireSetup(COFPlayer *pPlayer, Vector vecOffset, Vector *vecPos, QAngle *angDir, bool bHitTeam, float flEndPos)
 {
 	QAngle angles = pPlayer->EyeAngles();
 
@@ -1363,11 +1365,11 @@ void COFWeaponBase::GetProjectileFireSetup(COFPlayer *pPlayer, Vector param_2, V
 
 	Vector vecShootPos = pPlayer->Weapon_ShootPosition();
 
-	Vector vecEndPos = param_6 * vecForward + vecShootPos;
+	Vector vecEndPos = flEndPos * vecForward + vecShootPos;
 
 	trace_t tr;
 
-	if (param_5)
+	if (bHitTeam)
 	{
 		CTraceFilterSimple tracefilter(pPlayer, COLLISION_GROUP_NONE);
 
@@ -1382,15 +1384,15 @@ void COFWeaponBase::GetProjectileFireSetup(COFPlayer *pPlayer, Vector param_2, V
 		UTIL_TraceLine(vecShootPos, vecEndPos, MASK_SOLID, &traceFilter, &tr);
 	}
 
-	*param_3 = (vecUp * param_2.z) + (vecRight * param_2.y) + (vecForward * param_2.x) + vecShootPos;
+	*vecPos = (vecUp * vecOffset.z) + (vecRight * vecOffset.y) + (vecForward * vecOffset.x) + vecShootPos;
 
 	if (tr.fraction > 0.1)
 	{
-		VectorAngles(tr.endpos - *param_3, *param_4);
+		VectorAngles(tr.endpos - *vecPos, *angDir);
 	}
 	else
 	{
-		VectorAngles(vecEndPos - *param_3, *param_4);
+		VectorAngles(vecEndPos - *vecPos, *angDir);
 	}
 }
 
@@ -2190,6 +2192,95 @@ const char *COFWeaponBase::GetMuzzleFlashParticleEffect()
 	}
 	return NULL;
 }
+
+#ifdef CLIENT_DLL
+void COFWeaponBase::CreateMuzzleFlashEffects(CBaseEntity *pModel, int iIndex)
+{
+	if (!pModel) return;
+
+	if (UsingViewModel() && !g_pClientMode->ShouldDrawViewModel()) return;
+
+	int iAttachment = pModel->LookupAttachment("muzzle");
+	const char *pszMuzzleFlashModel = GetMuzzleFlashModel();
+	const char *pszMuzzleFlashParticle = GetMuzzleFlashParticleEffect();
+	const char *pszMuzzleFlashEffect = NULL;
+
+	if (GetOFPlayerOwner() && GetOFPlayerOwner()->InFirstPersonView())
+	{
+		pszMuzzleFlashEffect = GetMuzzleFlashEffectName_1st();
+	}
+	else
+	{
+		pszMuzzleFlashEffect = GetMuzzleFlashEffectName_3rd();
+	}
+
+	if (iAttachment < 1) return;
+
+	if (pszMuzzleFlashParticle || pszMuzzleFlashModel || pszMuzzleFlashEffect)
+	{
+		Vector origin;
+		QAngle angle;
+
+		pModel->GetAttachment(iAttachment, origin, angle);
+
+		if (pszMuzzleFlashEffect)
+		{
+			// Fill out the generic data
+			CEffectData data;
+			data.m_vOrigin = origin;
+			data.m_vAngles = angle;
+			data.m_hEntity = pModel->GetRefEHandle();
+			data.m_nAttachmentIndex = iAttachment;
+			data.m_flMagnitude = 0.2;
+
+			DispatchEffect(pszMuzzleFlashEffect, data);
+		}
+
+		// OFTODO: Muzzle Flash Models
+		if (pszMuzzleFlashModel)
+		{
+			if (m_hMuzzleFlashModel[iIndex])
+			{
+
+			}
+			else
+			{
+
+			}
+		}
+
+		if (pszMuzzleFlashParticle)
+		{
+			DispatchMuzzleEffect(pszMuzzleFlashParticle, iIndex);
+		}
+
+	}
+}
+
+void COFWeaponBase::ProcessMuzzleFlashEvent()
+{
+	COFPlayer *pPlayer = GetOFPlayerOwner();
+	if (!pPlayer) return;
+
+	CBaseEntity *pViewmodel = pPlayer->GetViewModel();
+
+	bool bIsViewModel = (pViewmodel != this);
+
+	CRecordEffectOwner record(pPlayer, bIsViewModel);
+	CreateMuzzleFlashEffects(pViewmodel, 0);
+
+	int iModelIndex = GetModelIndex();
+	int iWorldIndex = GetWorldModelIndex();
+	if (ToolsEnabled() && clienttools->IsInRecordingMode() && iModelIndex != iWorldIndex && pPlayer->IsLocalPlayer())
+	{
+		CRecordEffectOwner record(pPlayer, false);
+		SetModelIndex(iWorldIndex);
+		CreateMuzzleFlashEffects(this, 1);
+		SetModelIndex(iModelIndex);
+	}
+}
+
+#endif
 
 // OFSTATUS: COMPLETE
 int COFWeaponBase::GetSkin()

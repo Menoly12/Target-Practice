@@ -11,6 +11,7 @@
 #endif
 #include "of_weapon_base_gun.h"
 #include "of_weapon_grenadeproj_pipebomb.h"
+#include "of_projectile_rocket.h"
 #include "of_fx_shared.h"
 
 // ----------------------------------------------------------------------------- //
@@ -354,6 +355,34 @@ CBaseEntity *COFWeaponBaseGun::FirePipeBomb(COFPlayer *pPlayer, int iType)
 
 CBaseEntity *COFWeaponBaseGun::FireRocket(COFPlayer *pPlayer, int iType)
 {
+
+	PlayWeaponShootSound();
+
+	#ifdef GAME_DLL
+
+	Vector vecPos;
+	QAngle angDir;
+	Vector vecOffset(23.5, 12.0, -3.0);
+	if (pPlayer->GetFlags() & FL_DUCKING) vecOffset.z = 8.0;
+
+	GetProjectileFireSetup(pPlayer, vecOffset, &vecPos, &angDir, false);
+
+	Vector vecEyePos = pPlayer->EyePosition();
+
+	trace_t trace;
+	CTraceFilterSimple filter(this, COLLISION_GROUP_NONE);
+	UTIL_TraceLine(vecEyePos, vecPos, MASK_SOLID_BRUSHONLY, &filter, &trace);
+
+	COFProjectile_Rocket *pRocket = COFProjectile_Rocket::Create(this, trace.endpos, angDir, pPlayer, pPlayer);
+
+	if (pRocket)
+	{
+		pRocket->SetCritical(IsAttackCritical());
+		pRocket->SetDamage(GetProjectileDamage());
+	}
+
+	#endif
+
 	return NULL;
 }
 

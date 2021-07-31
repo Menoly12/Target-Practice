@@ -283,7 +283,7 @@ class COFWeaponBase : public CBaseCombatWeapon, IHasOwner, public CGameEventList
     //virtual bool CalcIsAttackCriticalHelperNoCrits();
     //virtual int GetPenetrateType();
     // some of these could be references. (Any that aren't null checked, make into refs.)
-    virtual void GetProjectileFireSetup(COFPlayer *pPlayer, Vector param_2, Vector *param_3, QAngle *param_4, bool param_5, float param_6);
+	virtual void GetProjectileFireSetup(COFPlayer *pPlayer, Vector vecOffset, Vector *vecPos, QAngle *angDir, bool bHitTeam, float flEndPos = 2000.0);
     // This return type is almost certainly incorrect.
     // virtual QAngle GetSpreadAngles(); NOTE: do pPlayer->EyeAngles() instead
     virtual bool IsFiring() const;
@@ -320,6 +320,10 @@ class COFWeaponBase : public CBaseCombatWeapon, IHasOwner, public CGameEventList
     virtual const char *GetMuzzleFlashModel();
     virtual float GetMuzzleFlashModelLifetime();
     virtual const char *GetMuzzleFlashParticleEffect();
+	#ifdef CLIENT_DLL
+	virtual void CreateMuzzleFlashEffects(CBaseEntity *pModel, int iIndex);
+	virtual void ProcessMuzzleFlashEvent();
+	#endif
     // virtual const char *GetInventoryModel(); // econ
     virtual float GetSpeedMod();
 	virtual bool CanFireCriticalShot() { return true; };
@@ -417,4 +421,11 @@ protected:
 	static acttable_t m_acttablePrimary[];
 	static acttable_t m_acttableBuilding[];
 	static acttable_t m_acttablePDA[];
+
+	#ifdef CLIENT_DLL
+
+	// why is this an array!!!
+	CHandle<CBaseEntity> m_hMuzzleFlashModel[10]; // CHandle<C_MuzzleFlashModel> - OFTODO: model muzzleflashes
+
+	#endif
 };
