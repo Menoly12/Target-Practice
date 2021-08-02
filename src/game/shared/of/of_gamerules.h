@@ -103,6 +103,7 @@ public:
 	virtual void SetHudType(int iHudType);
 	virtual void SetOvertimeAllowedForCTF(bool bAllow) { m_bOvertimeAllowedForCTF = bAllow; }
 	virtual float FlItemRespawnTime() { return 10.0; } // param_1 goes unused
+	virtual bool CanHaveAmmo(CBaseCombatCharacter *pPlayer, int iAmmoIndex);
 #endif
 	virtual int GetFarthestOwnedControlPoint(int iTeam, bool param_2);
 	virtual bool TeamMayCapturePoint(int iTeam, int iPointIndex);

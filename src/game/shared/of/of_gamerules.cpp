@@ -1041,6 +1041,20 @@ void COFGameRules::SetHudType(int iHudType)
 	}
 }
 
+bool COFGameRules::CanHaveAmmo(CBaseCombatCharacter *pPlayer, int iAmmoIndex)
+{
+	COFPlayer *pOFPlayer = ToOFPlayer(pPlayer);
+
+	if (iAmmoIndex > -1 && pOFPlayer)
+	{
+		int iMaxAmmo = pOFPlayer->m_Class.GetClassData()->m_iMaxAmmo[iAmmoIndex];
+
+		if (iMaxAmmo > pOFPlayer->GetAmmoCount(iAmmoIndex)) return true;
+	}
+
+	return false;
+}
+
 #endif // GAME_DLL
 
 // OFSTATUS: COMPLETE

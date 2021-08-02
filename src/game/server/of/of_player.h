@@ -110,6 +110,7 @@ public:
 	void ManageRegularWeapons(OFPlayerClassData_t *pClassData);
 	void RemoveAllWeapons();
 	void SetAnimation(PLAYER_ANIM playerAnim);
+	int	GiveAmmo(int iCount, int iAmmoIndex, bool bSuppressSound = true); // filled with attributes, cut down
 
 private:
 

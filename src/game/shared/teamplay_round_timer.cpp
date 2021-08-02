@@ -774,7 +774,7 @@ void CTeamRoundTimer::SendTimeWarning( int nWarning )
 					}
 				}
 
-#ifdef TF_CLIENT_DLL
+#if defined(TF_CLIENT_DLL) || defined(OF_CLIENT_DLL)
 				if ( bShouldPlaySound == true )
 				{
 					pPlayer->EmitSound( GetTimeWarningSound( nWarning ) );

@@ -108,9 +108,11 @@ CBaseEntity *COFPowerup::Respawn()
 {
 	m_bRespawning = true;
 
+	CBaseEntity *pEntity = BaseClass::Respawn();
+
 	SetNextThink(gpGlobals->curtime + GetRespawnDelay());
 
-	return BaseClass::Respawn();
+	return pEntity;
 }
 
 bool COFPowerup::ValidTouch(CBasePlayer *pPlayer)

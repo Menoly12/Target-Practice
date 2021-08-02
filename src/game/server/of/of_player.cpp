@@ -1220,6 +1220,37 @@ void COFPlayer::RemoveAllWeapons()
 	// field_0xde0 leads to lots of econ stuff - ignore!
 }
 
+int COFPlayer::GiveAmmo(int iCount, int iAmmoIndex, bool bSuppressSound)
+{
+	if (iCount <= 0)
+		return 0;
+
+	if (!g_pGameRules->CanHaveAmmo(this, iAmmoIndex))
+	{
+		// game rules say I can't have any more of this ammo type.
+		return 0;
+	}
+
+	if (iAmmoIndex < 0 || iAmmoIndex >= MAX_AMMO_SLOTS)
+		return 0;
+
+	int iMax = m_Class.GetClassData()->m_iMaxAmmo[iAmmoIndex];
+	int iAdd = MIN(iCount, iMax - m_iAmmo[iAmmoIndex]);
+	if (iAdd < 1)
+		return 0;
+
+	// Ammo pickup sound
+	// this would make the sound play twice but its always false anyways
+	//if (!bSuppressSound)
+	//{
+	//	EmitSound("BaseCombatCharacter.AmmoPickup");
+	//}
+
+	BaseClass::GiveAmmo(iAdd, iAmmoIndex);
+
+	return iAdd;
+}
+
 //OFSTATUS: INCOMPLETE
 CBaseEntity *COFPlayer::EntSelectSpawnPoint()
 {
