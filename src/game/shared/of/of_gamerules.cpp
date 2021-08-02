@@ -36,6 +36,7 @@
 	#include "of_objectiveresource.h"
 	#include "team_train_watcher.h"
 	#include "entity_ofstart.h"
+	#include "baseprojectile.h"
 	//#include "of_flag.h"
 #endif
 
@@ -472,16 +473,15 @@ void COFGameRules::RoundRespawn()
 // OFSTATUS: COMPLETE
 void COFGameRules::RemoveAllProjectiles()
 {
-	// OFTODO: we need to implement projectiles before we can uncomment this
-	//for (int i = 0; i < IBaseProjectileAutoList::AutoList().Count(); i++)
-	//{
-	//	UTIL_Remove(static_cast<CBaseProjectile*>(IBaseProjectileAutoList::AutoList()[i]));
-	//}
+	for (int i = 0; i < IBaseProjectileAutoList::AutoList().Count(); i++)
+	{
+		UTIL_Remove(static_cast<CBaseProjectile*>(IBaseProjectileAutoList::AutoList()[i]));
+	}
 }
 
 // OFSTATUS: INCOMPLETE
 // OFTODO: gotta implement objects first
-void COFGameRules::RemoveAllBuildings(bool param_1)
+void COFGameRules::RemoveAllBuildings(bool bExplode)
 {
 	/*
 	for (int i = 0; i < IBaseObjectAutoList::AutoList().Count(); i++)
@@ -513,9 +513,9 @@ void COFGameRules::RemoveAllBuildings(bool param_1)
 				gameeventmanager->FireEvent(event);
 			}
 
-			if (param_1)
+			if (bExplode)
 			{
-				//(**(code **)(*piVar1 + 0x568))(piVar1);
+				//(**(code **)(*piVar1 + 0x568))(piVar1); // DetonateObject()
 			}
 			else
 			{
@@ -548,10 +548,10 @@ void COFGameRules::RemoveAllSentriesAmmo()
 
 // OFSTATUS: COMPLETE
 // implement objects :lilacstate:
-void COFGameRules::RemoveAllProjectilesAndBuildings(bool param_1)
+void COFGameRules::RemoveAllProjectilesAndBuildings(bool bExplode)
 {
 	RemoveAllProjectiles();
-	RemoveAllBuildings(param_1);
+	RemoveAllBuildings(bExplode);
 }
 
 // OFSTATUS: COMPLETE
@@ -852,6 +852,44 @@ void COFGameRules::PreviousRoundEnd()
 	}
 
 	m_iPreviousRoundWinnerTeam = GetWinningTeam();
+}
+
+// OFSTATUS: INCOMPLETE
+void COFGameRules::SetupOnStalemateStart()
+{
+	RemoveAllProjectilesAndBuildings();
+
+	if (IsInArenaMode())
+	{
+		// OFTODO: arena :v
+		//CArenaLogic *pLogicArenaEnt = dynamic_cast<CArenaLogic*>(gEntList.FindEntityByClassname(NULL, "tf_logic_arena"));
+
+		//if (pLogicArenaEnt)
+		//{}
+	}
+	else if (false)
+	{
+
+	}
+
+	for (int i = 0; i < gpGlobals->maxClients; i++)
+	{
+		COFPlayer *pPlayer = ToOFPlayer(UTIL_PlayerByIndex(i));
+		if (pPlayer)
+		{
+			if (IsInArenaMode())
+			{
+				pPlayer->SpeakConceptIfAllowed(MP_CONCEPT_ROUND_START);
+				pPlayer->SetSpeedOF();
+			}
+			else
+			{
+				pPlayer->SpeakConceptIfAllowed(MP_CONCEPT_SUDDENDEATH_START);
+			}
+		}
+	}
+
+	m_flStalemateStartTime = gpGlobals->curtime;
 }
 
 // OFSTATUS: COMPLETE

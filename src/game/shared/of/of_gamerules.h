@@ -79,9 +79,9 @@ public:
 	virtual void CreateStandardEntities();
 	virtual void RoundRespawn();
 	virtual void RemoveAllProjectiles();
-	virtual void RemoveAllBuildings(bool param_1);
+	virtual void RemoveAllBuildings(bool bExplode = false);
 	virtual void RemoveAllSentriesAmmo();
-	virtual void RemoveAllProjectilesAndBuildings(bool param_1);
+	virtual void RemoveAllProjectilesAndBuildings(bool bExplode = false);
 	virtual bool CanChangelevelBecauseOfTimeLimit();
 	virtual bool CanGoToStalemate();
 	virtual bool CheckCapsPerRound();
@@ -94,6 +94,7 @@ public:
 	virtual void RecalculateControlPointState();
 	virtual void SetupOnRoundStart();
 	virtual void SetupOnRoundRunning();
+	virtual void SetupOnStalemateStart();
 	virtual void PreviousRoundEnd();
 	virtual void SetupSpawnPointsForRound();
 	virtual bool SetCtfWinningTeam();
