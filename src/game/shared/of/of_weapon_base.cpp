@@ -803,21 +803,21 @@ void COFWeaponBase::WeaponIdle()
 	{
 		if (((GetActivity() != ACT_VM_IDLE_TO_LOWERED) && (GetActivity() != ACT_TRANSITION)) || CBaseCombatWeapon::HasWeaponIdleTimeElapsed())
 		{
-			COFWeaponBase::SendWeaponAnim(ACT_VM_IDLE_LOWERED);
+			SendWeaponAnim(ACT_VM_IDLE_LOWERED);
 			return;
 		}
 	}
 
 	if (GetActivity() == ACT_VM_IDLE_LOWERED)
 	{
-		COFWeaponBase::SendWeaponAnim(ACT_VM_IDLE);
+		SendWeaponAnim(ACT_VM_IDLE);
 	}
-	else
+	else if (HasWeaponIdleTimeElapsed())
 	{
-		if (m_bReloadsSingly == false || m_iReloadStage == OF_RELOAD_STAGE_NONE && CBaseCombatWeapon::HasWeaponIdleTimeElapsed() )
+		if (!m_bReloadsSingly || m_iReloadStage == OF_RELOAD_STAGE_NONE )
 		{
-			COFWeaponBase::SendWeaponAnim(ACT_VM_IDLE);
-			SetWeaponIdleTime(gpGlobals->curtime + CBaseAnimating::SequenceDuration());
+			SendWeaponAnim(ACT_VM_IDLE);
+			SetWeaponIdleTime(gpGlobals->curtime + SequenceDuration());
 		}
 	}
 }
@@ -1310,15 +1310,14 @@ bool COFWeaponBase::CalcIsAttackCriticalHelper()
 
 	if (bRapidFireCrits)
 	{
-
 		if (gpGlobals->curtime < m_flLastCritCheckTime + 1.0) return false;
 		m_flLastCritCheckTime = gpGlobals->curtime;
 
 		// muliply by the player's damage done over time
-		float flCritMultCalc = clamp(TF_WEAPON_CRIT_CHANCE_RAPID * flCritMult, 0.01f, 0.99f);
+		float flCritMultCalc = clamp(OF_WEAPON_CRIT_CHANCE_RAPID * flCritMult, 0.01f, 0.99f);
 
 		// the amount of time crits last
-		float flCritDuration = TF_WEAPON_CRIT_DURATION;
+		float flCritDuration = OF_WEAPON_CRIT_DURATION;
 
 		// the crit chance percentage 
 		float flCritChance = 1.0f / ((flCritDuration / flCritMultCalc) - flCritDuration);
@@ -1331,10 +1330,10 @@ bool COFWeaponBase::CalcIsAttackCriticalHelper()
 			RandomSeed(iSeed);
 		}
 
-		iRandom = RandomInt(0, TF_WEAPON_RANDOM_RANGE - 1.0);
-		if (flCritChance * TF_WEAPON_RANDOM_RANGE > iRandom)
+		iRandom = RandomInt(0, OF_WEAPON_RANDOM_RANGE - 1.0);
+		if (flCritChance * OF_WEAPON_RANDOM_RANGE > iRandom)
 		{
-			m_flCritDuration = gpGlobals->curtime + TF_WEAPON_CRIT_DURATION;
+			m_flCritDuration = gpGlobals->curtime + OF_WEAPON_CRIT_DURATION;
 			return true;
 		}
 		return false;
@@ -1349,8 +1348,8 @@ bool COFWeaponBase::CalcIsAttackCriticalHelper()
 			RandomSeed(iSeed);
 		}
 
-		iRandom = RandomInt(0, TF_WEAPON_RANDOM_RANGE - 1);
-		return iRandom < (TF_WEAPON_CRIT_CHANCE_NORMAL * flCritMult) * TF_WEAPON_RANDOM_RANGE;
+		iRandom = RandomInt(0, OF_WEAPON_RANDOM_RANGE - 1);
+		return iRandom < (OF_WEAPON_CRIT_CHANCE_NORMAL * flCritMult) * OF_WEAPON_RANDOM_RANGE;
 	}
 }
 

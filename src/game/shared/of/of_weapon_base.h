@@ -312,7 +312,7 @@ class COFWeaponBase : public CBaseCombatWeapon, IHasOwner, public CGameEventList
 	virtual float GetDeflectionRadius() { return 128.0; };
 	virtual float GetJarateTime() { return 0.0f; };
     virtual bool CanAttack();
-    virtual bool GetCanAttackFlags() const { return false; };
+    virtual int GetCanAttackFlags() const { return 0; };
     virtual void WeaponReset();
     // virtual void WeaponRegenerate(); // energy weapons
     virtual const char *GetMuzzleFlashEffectName_3rd();

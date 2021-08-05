@@ -8,6 +8,7 @@
 // Open Fortress Modifications (CC-BY-NC-CA)
 // * added check for OF_DLL and OF_CLIENT_DLL defines
 // * included of_shareddefs.h
+// * renamed TF_DAMAGE_CRIT_MULTIPLIER to OF_DAMAGE_CRIT_MULTIPLIER
 
 #include "cbase.h"
 #include "in_buttons.h"
@@ -1617,7 +1618,7 @@ bool CBaseCombatWeapon::IsAllowedToWithdrawFromCritBucket( float flDamage )
 	float flMult = ( IsMeleeWeapon() ) ? 0.5f : RemapValClamped( ( (float)m_nCritSeedRequests / (float)m_nCritChecks ), 0.1f, 1.f, 1.f, 3.f );
 
 	// Would this take us below our limit?
-	float flCost = ( flDamage * TF_DAMAGE_CRIT_MULTIPLIER ) * flMult;
+	float flCost = ( flDamage * OF_DAMAGE_CRIT_MULTIPLIER ) * flMult;
 	if ( flCost > m_flCritTokenBucket )
 		return false;
 

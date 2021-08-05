@@ -39,12 +39,14 @@ enum OF_Collision_Group_t
 
 // maybe rename to OF_ ? - cherry
 // nevermind! compatibility
+// nevermind again :) - cherry
 
-#define TF_DAMAGE_CRIT_MULTIPLIER	3
-#define TF_WEAPON_RANDOM_RANGE				1000.0f
-#define TF_WEAPON_CRIT_CHANCE_NORMAL		0.02f
-#define TF_WEAPON_CRIT_CHANCE_RAPID			0.02f
-#define TF_WEAPON_CRIT_DURATION				2.0f
+#define OF_DAMAGE_CRIT_MULTIPLIER	3
+#define OF_WEAPON_RANDOM_RANGE				1000.0f
+#define OF_WEAPON_CRIT_CHANCE_NORMAL		0.02f
+#define OF_WEAPON_CRIT_CHANCE_RAPID			0.02f
+#define OF_WEAPON_CRIT_CHANCE_MELEE			0.15f
+#define OF_WEAPON_CRIT_DURATION				2.0f
 
 #define OF_PLAYER_WEAPON_COUNT 6
 #define OF_PLAYER_GRENADE_COUNT 6

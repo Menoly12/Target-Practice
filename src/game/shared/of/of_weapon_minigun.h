@@ -55,6 +55,7 @@ public:
 
 	virtual void OnDataChanged(DataUpdateType_t updateType);
 	virtual void ItemPreFrame();
+	virtual void ItemPostFrame();
 	virtual void SetDormant(bool bDormant);
 	virtual void WeaponSoundUpdate();
 

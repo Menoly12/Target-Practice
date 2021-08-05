@@ -22,9 +22,9 @@
 // Data tables
 // ----------------------------------------------------------------------------- //
 
-IMPLEMENT_NETWORKCLASS_ALIASED(OFMinigun, DT_WeaponMinigun)
+IMPLEMENT_NETWORKCLASS_ALIASED(OFMinigun, DT_OFWeaponMinigun)
 
-BEGIN_NETWORK_TABLE(COFMinigun, DT_WeaponMinigun)
+BEGIN_NETWORK_TABLE(COFMinigun, DT_OFWeaponMinigun)
 #ifdef CLIENT_DLL
 	RecvPropInt(RECVINFO(m_iWeaponState)),
 	RecvPropBool(RECVINFO(m_bCritShot)),
@@ -456,6 +456,13 @@ void COFMinigun::ItemPreFrame()
 	BaseClass::ItemPreFrame();
 }
 
+void COFMinigun::ItemPostFrame()
+{
+	m_flNextEmptySoundTime = gpGlobals->curtime + 1.0;
+
+	BaseClass::ItemPostFrame();
+}
+
 void COFMinigun::SetDormant(bool bDormant)
 {
 	if (!IsCarriedByLocalPlayer())
@@ -552,6 +559,7 @@ void COFMinigun::WeaponSoundUpdate()
 
 	if (iSound != -1)
 	{
+		DevMsg("COFMinigun: New sound created! ,m_iCurrentSound: %i , iSound: %i\n", m_iCurrentSound, iSound);
 		const char *pszSound = GetShootSound(iSound);
 		CLocalPlayerFilter filter;
 

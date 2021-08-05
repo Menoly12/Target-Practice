@@ -25,6 +25,7 @@ void COFWeaponInfo::Parse( KeyValues *pKeyValuesData, const char *szWeaponName )
 
 	// These have Secondary_ versions, so just in case, made compatability to add new modes
 	// Add things that should be changable via modes here
+
 	// example of how this would be accessed pWeapon->GetTFWeapon()->m_WeaponModeInfo[m_iWeaponType].m_something
 	for( int i = 0; i < OF_WEAPON_MODE_COUNT; i++ )
 	{
@@ -63,6 +64,44 @@ void COFWeaponInfo::Parse( KeyValues *pKeyValuesData, const char *szWeaponName )
 
 		m_WeaponModeInfo[i].m_flSmackDelay = pKeyValuesData->GetFloat( Shared_VarArgs("%sSmackDelay", szPrefix), 0.2f );
 	}
+
+	// OFINFO: this is just for compatibility! this sets all the secondary values to the primary values for live tf2 weapons to work properly
+	//---------------------------
+	int iWeaponMode = OF_WEAPON_MODE_SECONDARY;
+	const char *szPrefix = g_aWeaponModePrefix[iWeaponMode];
+	const char *szPrimaryPrefix = g_aWeaponModePrefix[OF_WEAPON_MODE_PRIMARY];
+
+	m_WeaponModeInfo[iWeaponMode].m_iDamage = pKeyValuesData->GetInt(Shared_VarArgs("%sDamage", szPrefix), pKeyValuesData->GetInt(Shared_VarArgs("%sDamage", szPrimaryPrefix), 0));
+	m_WeaponModeInfo[iWeaponMode].m_flRange = pKeyValuesData->GetFloat(Shared_VarArgs("%sRange", szPrefix), pKeyValuesData->GetFloat(Shared_VarArgs("%sRange", szPrimaryPrefix), 8192.0f));
+	m_WeaponModeInfo[iWeaponMode].m_iBullets = pKeyValuesData->GetInt(Shared_VarArgs("%sBulletsPerShot", szPrefix), pKeyValuesData->GetInt(Shared_VarArgs("%sBulletsPerShot", szPrimaryPrefix), 0));
+	m_WeaponModeInfo[iWeaponMode].m_flSpread = pKeyValuesData->GetFloat(Shared_VarArgs("%sSpread", szPrefix), pKeyValuesData->GetFloat(Shared_VarArgs("%sSpread", szPrimaryPrefix), 0.0f));
+	m_WeaponModeInfo[iWeaponMode].m_flPunchAngle = pKeyValuesData->GetFloat(Shared_VarArgs("%sPunchAngle", szPrefix), pKeyValuesData->GetFloat(Shared_VarArgs("%sPunchAngle", szPrimaryPrefix), 0.0f));
+
+	m_WeaponModeInfo[iWeaponMode].m_flTimeFireDelay = pKeyValuesData->GetFloat(Shared_VarArgs("%sTimeFireDelay", szPrefix), pKeyValuesData->GetFloat(Shared_VarArgs("%sTimeFireDelay", szPrimaryPrefix), 0.0f));
+	m_WeaponModeInfo[iWeaponMode].m_flTimeIdle = pKeyValuesData->GetFloat(Shared_VarArgs("%sTimeIdle", szPrefix), pKeyValuesData->GetFloat(Shared_VarArgs("%sTimeIdle", szPrimaryPrefix), 0.0f));
+	m_WeaponModeInfo[iWeaponMode].m_flTimeIdleEmpty = pKeyValuesData->GetFloat(Shared_VarArgs("%sTimeIdleEmpty", szPrefix), pKeyValuesData->GetFloat(Shared_VarArgs("%sTimeIdleEmpty", szPrimaryPrefix), 0.0f));
+
+	m_WeaponModeInfo[iWeaponMode].m_flTimeReloadStart = pKeyValuesData->GetFloat(Shared_VarArgs("%sTimeReloadStart", szPrefix), pKeyValuesData->GetFloat(Shared_VarArgs("%sTimeReloadStart", szPrimaryPrefix), 0.0f));
+	m_WeaponModeInfo[iWeaponMode].m_flTimeReload = pKeyValuesData->GetFloat(Shared_VarArgs("%sTimeReload", szPrefix), pKeyValuesData->GetFloat(Shared_VarArgs("%sTimeReload", szPrimaryPrefix), 0.0f));
+
+	m_WeaponModeInfo[iWeaponMode].m_bDrawCrosshair = pKeyValuesData->GetBool(Shared_VarArgs("%sDrawCrosshair", szPrefix), pKeyValuesData->GetBool(Shared_VarArgs("%sDrawCrosshair", szPrimaryPrefix), true));
+	m_WeaponModeInfo[iWeaponMode].m_iAmmoPerShot = pKeyValuesData->GetInt(Shared_VarArgs("%sAmmoPerShot", szPrefix), pKeyValuesData->GetInt(Shared_VarArgs("%sAmmoPerShot", szPrimaryPrefix), 1));
+
+	m_WeaponModeInfo[iWeaponMode].m_bUseRapidFireCrits = pKeyValuesData->GetBool(Shared_VarArgs("%sUseRapidFireCrits", szPrefix), pKeyValuesData->GetBool(Shared_VarArgs("%sUseRapidFireCrits", szPrimaryPrefix), true));
+
+	const char *szProjectileType = pKeyValuesData->GetString("ProjectileType", "projectile_none");
+	m_WeaponModeInfo[iWeaponMode].m_iProjectileType = OF_PROJECTILE_TYPE_NONE;
+	for (int y = 0; y < OF_PROJECTILE_TYPE_COUNT; y++)
+	{
+		if (FStrEq(szProjectileType, g_aProjectileTypeNames[y]))
+			m_WeaponModeInfo[iWeaponMode].m_iProjectileType = y;
+	}
+
+	m_WeaponModeInfo[iWeaponMode].m_flProjectileSpeed = pKeyValuesData->GetFloat(Shared_VarArgs("%sProjectileSpeed", szPrefix), pKeyValuesData->GetFloat(Shared_VarArgs("%sProjectileSpeed", szPrimaryPrefix), 0.0f));
+
+	m_WeaponModeInfo[iWeaponMode].m_flSmackDelay = pKeyValuesData->GetFloat(Shared_VarArgs("%sSmackDelay", szPrefix), pKeyValuesData->GetFloat(Shared_VarArgs("%sSmackDelay", szPrimaryPrefix), 0.2f));
+
+	//---------------------------
 
 	// Brass.
 	m_bDoInstantEjectBrass = pKeyValuesData->GetBool( "DoInstantEjectBrass", true );

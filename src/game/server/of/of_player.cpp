@@ -1246,7 +1246,7 @@ int COFPlayer::GiveAmmo(int iCount, int iAmmoIndex, bool bSuppressSound)
 	//	EmitSound("BaseCombatCharacter.AmmoPickup");
 	//}
 
-	BaseClass::GiveAmmo(iAdd, iAmmoIndex);
+	BaseClass::GiveAmmo(iAdd, iAmmoIndex, bSuppressSound);
 
 	return iAdd;
 }

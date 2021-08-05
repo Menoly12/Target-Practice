@@ -35,15 +35,15 @@ bool CAmmoPack::MyTouch(CBasePlayer *pPlayer)
 
 		// Primary Ammo
 		int iMaxPrimaryAmmo = pOFPlayer->m_Class.GetClassData()->m_iMaxAmmo[OF_AMMO_PRIMARY];
-		int iPrimaryAmmoGiven = pOFPlayer->GiveAmmo(ceil(iMaxPrimaryAmmo * PackRatios[GetPowerupSize()]), OF_AMMO_PRIMARY, true);
+		int iPrimaryAmmoGiven = pOFPlayer->GiveAmmo(ceil(iMaxPrimaryAmmo * PackRatios[GetPowerupSize()]), OF_AMMO_PRIMARY);
 
 		// Secondary Ammo
 		int iMaxSecondaryAmmo = pOFPlayer->m_Class.GetClassData()->m_iMaxAmmo[OF_AMMO_SECONDARY];
-		int iSecondaryAmmoGiven = pOFPlayer->GiveAmmo(ceil(iMaxSecondaryAmmo * PackRatios[GetPowerupSize()]), OF_AMMO_SECONDARY, true);
+		int iSecondaryAmmoGiven = pOFPlayer->GiveAmmo(ceil(iMaxSecondaryAmmo * PackRatios[GetPowerupSize()]), OF_AMMO_SECONDARY);
 
 		// Metal
 		int iMaxMetal = pOFPlayer->m_Class.GetClassData()->m_iMaxAmmo[OF_AMMO_METAL];
-		int iMetalGiven = pOFPlayer->GiveAmmo(ceil(iMaxMetal * PackRatios[GetPowerupSize()]), OF_AMMO_METAL, true);
+		int iMetalGiven = pOFPlayer->GiveAmmo(ceil(iMaxMetal * PackRatios[GetPowerupSize()]), OF_AMMO_METAL);
 
 		//int iCloakGiven = pOFPlayer->m_Shared.AddToSpyCloakMeter(PackRatios[GetPowerupSize()] * 100.0, false);
 
