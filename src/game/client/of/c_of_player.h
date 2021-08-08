@@ -53,6 +53,7 @@ public:
 	void OnPlayerClassChange();
 	void UpdateClientSideAnimation();
 	const QAngle &GetRenderAngles();
+	int GetMaxHealth() const;
 
 	COFPlayerAnimState *m_PlayerAnimState;
 

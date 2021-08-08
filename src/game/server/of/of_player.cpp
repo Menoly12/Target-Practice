@@ -188,6 +188,9 @@ void COFPlayer::StateEnter(int state)
 	case TF_STATE_WELCOME:
 		StateEnterWELCOME();
 		break;
+	case TF_STATE_ACTIVE:
+		StateEnterACTIVE();
+		break;
 	default:
 		break;
 	}
@@ -210,8 +213,10 @@ void COFPlayer::StateEnterWELCOME()
 
 	StartObserverMode( OBS_MODE_FIXED );
 	SetMoveType( MOVETYPE_NONE );
-	SetSolidFlags( GetSolidFlags() | SOLID_OBB_YAW );
-	AddEffects( 48 );
+	AddSolidFlags( SOLID_OBB_YAW );
+	AddEffects(EF_NOSHADOW | EF_NODRAW);
+
+	if (VPhysicsGetObject()) VPhysicsGetObject()->Sleep();
 
 	char title[128];
 
@@ -235,6 +240,22 @@ void COFPlayer::StateEnterWELCOME()
 	ShowViewPortPanel( PANEL_INFO, true, data );
 
 	data->deleteThis();
+}
+
+// OFSTATUS: INCOMPLETE
+void COFPlayer::StateEnterACTIVE()
+{
+	SetMoveType(MOVETYPE_WALK);
+	RemoveEffects(EF_NOSHADOW | EF_NODRAW);
+	RemoveSolidFlags(SOLID_OBB_YAW);
+	m_Local.m_iHideHUD = 0;
+	
+	if (VPhysicsGetObject()) VPhysicsGetObject()->Wake();
+
+	//field_0x21ac = gpGlobals->curtime;
+	//field_0x2000 = gpGlobals->curtime;
+
+	//CBaseEntity::ThinkSet((FuncDef3 *)this,(float)RegenThink,(char *)0x0);
 }
 
 //OFSTATUS: Incomplete
@@ -318,6 +339,14 @@ void COFPlayer::ForceRespawn()
     StateEnter( TF_STATE_ACTIVE );
 	Spawn();
     //BaseClass::ForceRespawn();
+}
+
+// this is 2886 lines long, goodluck
+void COFPlayer::Event_Killed(const CTakeDamageInfo &info)
+{
+	StateEnter(TF_STATE_DYING);
+
+	BaseClass::Event_Killed(info);
 }
 
 //OFSTATUS: Complete
@@ -1350,7 +1379,7 @@ void COFPlayer::UpdateModel()
 	//BaseClass::SetModel((COFPlayerClassShared*)(this[1].data + 0x688)->GetModelName());
 	BaseClass::SetModel( m_Class.GetModelName() ); //TEMPORARY FOR TESTING ONLY
 	SetCollisionBounds( BaseClass::GetPlayerMins(), BaseClass::GetPlayerMaxs() );
-    //m_PlayerAnimState->OnNewModel(); //Crashes so disabled for now
+    m_PlayerAnimState->OnNewModel();
 }
 
 extern ConVar friendlyfire;

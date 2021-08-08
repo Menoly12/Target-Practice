@@ -43,6 +43,7 @@ void COFModeManager::Init()
 	g_pClientMode = GetClientModeNormal();
 	
 	PanelMetaClassMgr()->LoadMetaClassDefinitionFile( "scripts/vgui_screens.txt" );
+	engine->AddPhonemeFile("scripts/game_sounds_vo_phonemes.txt");
 }
 
 void COFModeManager::LevelShutdown()

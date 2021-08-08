@@ -172,7 +172,7 @@ bool COFTeamManager::Init()
 
 	for (int i = 0; i < OF_TEAM_COUNT; i++)
 	{
-		int index = Create( g_aTeamNames[i] , g_aTeamColors[i] );
+		int index = Create( g_aTeamNames[i] , color32{0,0,0,0} );
 		if (index != i)
 			return false;
 	}

@@ -198,7 +198,7 @@ BEGIN_NETWORK_TABLE_NOBASE( COFPlayerClassShared, DT_OFPlayerClassShared )
 	RecvPropBool( RECVINFO( m_bCustomModelVisibleToSelf ) ),
 	RecvPropBool( RECVINFO( m_bCustomModelClassAnim ) ),
 #else
-	SendPropInt( SENDINFO( m_iClass ) ),
+	SendPropInt( SENDINFO( m_iClass ), Q_log2(OF_CLASS_COUNT)+1, SPROP_UNSIGNED ),
 
 	SendPropStringT( SENDINFO( m_szClassIcon ) ),
 	SendPropStringT( SENDINFO( m_szCustomModel ) ),

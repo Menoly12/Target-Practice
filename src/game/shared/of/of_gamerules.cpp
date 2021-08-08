@@ -37,6 +37,7 @@
 	#include "team_train_watcher.h"
 	#include "entity_ofstart.h"
 	#include "baseprojectile.h"
+	#include "of_playerresource.h"
 	//#include "of_flag.h"
 #endif
 
@@ -388,7 +389,7 @@ bool COFGameRules::FlagsMayBeCapped()
 // OFSTATUS: INCOMPLETE
 void COFGameRules::CreateStandardEntities()
 {
-	//g_pPlayerResource
+	g_pPlayerResource = dynamic_cast<COFPlayerResource*>(CBaseEntity::Create("tf_player_manager", vec3_origin, vec3_angle));
 
 	g_pObjectiveResource = dynamic_cast<COFObjectiveResource*>(CBaseEntity::Create("tf_objective_resource", vec3_origin, vec3_angle));
 

@@ -25,7 +25,7 @@ void COFImagePanel::ApplySettings(KeyValues *pKey)
 {
 	for (int i = 0; i < OF_TEAM_COUNT; i++)
 	{
-		const char *pString = pKey->GetString(VarArgs("teambg_%d"));
+		const char *pString = pKey->GetString(VarArgs("teambg_%d", i));
 		V_strncpy(m_szTeamImage[i], pString, sizeof(m_szTeamImage[i]));
 		if (m_szTeamImage[i][0] != '\0')
 		{

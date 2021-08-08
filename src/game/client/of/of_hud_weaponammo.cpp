@@ -18,7 +18,7 @@ DECLARE_HUDELEMENT(COFHudWeaponAmmo);
 COFHudWeaponAmmo::COFHudWeaponAmmo(const char *pElementName) : CHudElement(pElementName), BaseClass(NULL, "HudWeaponAmmo")
 {
 	SetParent(g_pClientMode->GetViewport());
-	SetHiddenBits(HIDEHUD_PLAYERDEAD); // HIDEHUD_HEALTH | HIDEHUD_PLAYERDEAD - once the health hud is added replace the bits with this
+	SetHiddenBits(HIDEHUD_HEALTH | HIDEHUD_PLAYERDEAD);
 
 	hudlcd->SetGlobalStat("(ammo_primary)", "0");
 	hudlcd->SetGlobalStat("(ammo_secondary)","0");
@@ -64,9 +64,9 @@ void COFHudWeaponAmmo::ApplySchemeSettings(vgui::IScheme *pScheme)
 		m_pLowAmmoImage->GetBounds(m_iLowAmmoX, m_iLowAmmoY, m_iLowAmmoWidth, m_iLowAmmoHeight);
 	}
 
-	field_0x1b4 = -1;
-	field_0x1d8 = -1;
-	field_0x1b0 = NULL;
+	m_iAmmo1 = -1;
+	m_iAmmo2 = -1;
+	m_pActiveWeapon = NULL;
 
 	m_flNextThinkTime = 0.0;
 
@@ -166,22 +166,22 @@ void COFHudWeaponAmmo::OnThink()
 		hudlcd->SetGlobalStat("(ammo_primary)", VarArgs("%d", iAmmo1));
 		hudlcd->SetGlobalStat("(ammo_secondary)", VarArgs("%d", iAmmo2));
 
-		if (field_0x1b4 != iAmmo1 || field_0x1d8 != iAmmo2 || field_0x1b0 != pWeapon)
+		if (m_iAmmo1 != iAmmo1 || m_iAmmo2 != iAmmo2 || m_pActiveWeapon != pWeapon)
 		{
-			field_0x1b4 = iAmmo1;
-			field_0x1d8 = iAmmo2;
-			field_0x1b0 = pWeapon;
+			m_iAmmo1 = iAmmo1;
+			m_iAmmo2 = iAmmo2;
+			m_pActiveWeapon = pWeapon;
 
 			if (!pWeapon->UsesClipsForAmmo1())
 			{
 				UpdateAmmoLabels(false, false, true);
-				SetDialogVariable("Ammo", field_0x1b4);
+				SetDialogVariable("Ammo", m_iAmmo1);
 			}
 			else
 			{
 				UpdateAmmoLabels(true, true, false);
-				SetDialogVariable("Ammo", field_0x1b4);
-				SetDialogVariable("AmmoInReserve", field_0x1d8);
+				SetDialogVariable("Ammo", m_iAmmo1);
+				SetDialogVariable("AmmoInReserve", m_iAmmo2);
 			}
 
 			// iVar16 = (**(code **)(*piVar7 + 0x650))(piVar7);
@@ -203,8 +203,8 @@ void COFHudWeaponAmmo::OnThink()
 			g_pClientMode->GetViewportAnimationController()->StartAnimationSequence(this, "HudLowAmmoPulseStop");
 		}
 
-		field_0x1b4 = -1;
-		field_0x1d8 = -1;
+		m_iAmmo1 = -1;
+		m_iAmmo2 = -1;
 	}
 
 	m_flNextThinkTime = gpGlobals->curtime + 0.1;

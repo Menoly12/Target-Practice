@@ -135,12 +135,12 @@ const char *g_aTeamNames[] =
 	"Blue",
 };
 
-color32 g_aTeamColors[] =
+Color g_aTeamColors[] =
 {
 	{ 0, 0, 0, 0 },
 	{ 0, 0, 0, 0 },
-	{ 255, 0, 0, 0 },
-	{ 0, 0, 255, 0 },
+	{ 255, 64, 64, 255 },
+	{ 153, 204, 255, 255 },
 };
 
 float PackRatios[] =

@@ -405,7 +405,7 @@ extern const char *g_aAmmoNames[OF_AMMO_COUNT];
 
 // Team Defines
 extern const char *g_aTeamNames[OF_TEAM_COUNT];
-extern color32 g_aTeamColors[];
+extern Color g_aTeamColors[];
 
 // health/ammo defines
 extern float PackRatios[];

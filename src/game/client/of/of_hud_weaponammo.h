@@ -24,10 +24,10 @@ public:
 
 private:
 
-	CBaseCombatWeapon *field_0x1b0;
+	CBaseCombatWeapon *m_pActiveWeapon;
 
-	int field_0x1b4;
-	int field_0x1d8;
+	int m_iAmmo1;
+	int m_iAmmo2;
 
 	COFLabel *m_pAmmoInClip;
 	COFLabel *m_pAmmoInClipShadow;

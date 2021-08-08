@@ -15,6 +15,8 @@ class COFItem;
 class COFWeaponBase;
 class COFTeam;
 
+// OFTODO: organize and clean this place up >:V
+
 class COFPlayer : public CBaseMultiplayerPlayer
 {
 public:
@@ -33,9 +35,12 @@ public:
 	virtual void StateEnter(int state);
 
 	virtual void StateEnterWELCOME();
+	virtual void StateEnterACTIVE();
 
 	virtual void Spawn() override;
 	virtual void ForceRespawn() override;
+
+	virtual void Event_Killed(const CTakeDamageInfo &info);
 
 	virtual void InitClass();
 
@@ -47,7 +52,6 @@ public:
 	// Called from of_gamerules
 	void PreCacheKart();
 	static void PreCacheMvM();
-
 
 	void Precache();
 	void PrecacheOFPlayer();

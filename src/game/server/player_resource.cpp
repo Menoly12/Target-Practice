@@ -12,6 +12,9 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
+// Open Fortress Modifications (CC-BY-NC-CA)
+// * Created CPlayerResource::Init
+
 // Datatable
 IMPLEMENT_SERVERCLASS_ST_NOBASE(CPlayerResource, DT_PlayerResource)
 //	SendPropArray( SendPropString( SENDINFO(m_szName[0]) ), SENDARRAYINFO(m_szName) ),
@@ -54,17 +57,28 @@ void CPlayerResource::Spawn( void )
 {
 	for ( int i=0; i < MAX_PLAYERS+1; i++ )
 	{
-		m_iPing.Set( i, 0 );
-		m_iScore.Set( i, 0 );
-		m_iDeaths.Set( i, 0 );
-		m_bConnected.Set( i, 0 );
-		m_iTeam.Set( i, 0 );
-		m_bAlive.Set( i, 0 );
+		Init(i);
+		//m_iPing.Set( i, 0 );
+		//m_iScore.Set( i, 0 );
+		//m_iDeaths.Set( i, 0 );
+		//m_bConnected.Set( i, 0 );
+		//m_iTeam.Set( i, 0 );
+		//m_bAlive.Set( i, 0 );
 	}
 
 	SetThink( &CPlayerResource::ResourceThink );
 	SetNextThink( gpGlobals->curtime );
 	m_nUpdateCounter = 0;
+}
+
+void CPlayerResource::Init(int iPlayerIndex)
+{
+	m_iPing.Set(iPlayerIndex, 0);
+	m_iScore.Set(iPlayerIndex, 0);
+	m_iDeaths.Set(iPlayerIndex, 0);
+	m_bConnected.Set(iPlayerIndex, 0);
+	m_iTeam.Set(iPlayerIndex, 0);
+	m_bAlive.Set(iPlayerIndex, 0);
 }
 
 //-----------------------------------------------------------------------------

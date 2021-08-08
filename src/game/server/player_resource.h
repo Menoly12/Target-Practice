@@ -21,6 +21,7 @@ public:
 	DECLARE_DATADESC();
 
 	virtual void Spawn( void );
+	virtual void Init(int iPlayerIndex);
 	virtual	int	 ObjectCaps( void ) { return BaseClass::ObjectCaps() | FCAP_DONT_SAVE; }
 	virtual void ResourceThink( void );
 	virtual void UpdatePlayerData( void );

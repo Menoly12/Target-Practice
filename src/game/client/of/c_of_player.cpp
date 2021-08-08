@@ -15,6 +15,7 @@
 #include "voice_status.h"
 #include "prediction.h"
 #include "tier0/vprof.h"
+#include "c_of_playerresource.h"
 
 // Don't alias here
 // Why not? -Nopey
@@ -448,4 +449,14 @@ const QAngle &C_OFPlayer::GetRenderAngles()
 	{
 		return m_PlayerAnimState->GetRenderAngles();
 	}
+}
+
+int C_OFPlayer::GetMaxHealth() const
+{
+	if (g_C_OFPlayerResource)
+	{
+		return g_C_OFPlayerResource->GetMaxHealth(entindex());
+	}
+	
+	return 1;
 }

@@ -90,6 +90,8 @@ public:
 
 	OFPlayerClassData_t *GetClassData() { return GetPlayerClassData(m_iClass); }
 
+	int GetClassIndex() { return m_iClass; }
+
 protected:
 
 	CNetworkVar( int, m_iClass );
