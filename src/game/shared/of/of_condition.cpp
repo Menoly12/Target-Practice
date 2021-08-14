@@ -12,6 +12,29 @@
 #include "dt_utlvector_recv.h"
 #endif
 
+#ifdef CLIENT_DLL
+void RecvProxy_StringToArgs( const CRecvProxyData *pData, void *pStruct, void *pOut )
+{
+	COFCondition *pCond = (COFCondition*)pStruct;
+	char *pStrOut = (char*)pOut;
+	if ( pData->m_pRecvProp->m_StringBufferSize <= 0 )
+	{
+		return;
+	}
+
+	for ( int i=0; i < pData->m_pRecvProp->m_StringBufferSize; i++ )
+	{
+		pStrOut[i] = pData->m_Value.m_pString[i];
+		if ( pStrOut[i] == 0 )
+			break;
+	}
+	
+	pStrOut[pData->m_pRecvProp->m_StringBufferSize-1] = 0;
+
+	pCond->args.Tokenize(pStrOut);
+}
+#endif
+
 BEGIN_NETWORK_TABLE_NOBASE( COFCondition, DT_Condition )
 #ifdef CLIENT_DLL
 	RecvPropInt( RECVINFO( m_iID ) ),
@@ -19,7 +42,7 @@ BEGIN_NETWORK_TABLE_NOBASE( COFCondition, DT_Condition )
 	RecvPropEHandle( RECVINFO( m_hProvider ) ),
 	RecvPropEHandle( RECVINFO( m_hOuter ) ),
 	RecvPropInt( RECVINFO( m_iSeed ) ),
-	RecvPropString( RECVINFO( m_iszVars ) )
+	RecvPropString( RECVINFO( m_iszVars ), 0, RecvProxy_StringToArgs )
 #else
 	SendPropInt( SENDINFO( m_iID ) ),
 	SendPropFloat( SENDINFO( m_flDuration ) ),
@@ -49,7 +72,10 @@ COFCondition::COFCondition(
 	m_pManager = NULL;
 
 	if( szVars )
+	{
 		Q_strncpy( m_iszVars.GetForModify(), szVars, OF_MAX_COND_LENGHT );
+		args.Tokenize( m_iszVars );
+	}
 }
 
 COFCondition::~COFCondition()
@@ -345,15 +371,12 @@ void CondBasicThink( COFCondition *pCond )
 void CondBurningThink( COFCondition *pCond )
 {
 #ifdef GAME_DLL
-	CCommand args;
-	args.Tokenize(pCond->GetString());
-
-	int iDamage = args.ArgC() ? atoi(args[0]) : 3;
-	float flFlameFrequency = args.ArgC() > 1 ? atof(args[1]) : 0.5f;
+	int iDamage = pCond->args.ArgC() ? atoi(pCond->args[0]) : 3;
+	float flFlameFrequency = pCond->args.ArgC() > 1 ? atof(pCond->args[1]) : 0.5f;
 
 	// Newly created afterburn should only take effect once you stop firing at someone
 	// For consistency in damage output
-	float flFlameBurnTime = args.ArgC() > 2 ? atof(args[2]) : gpGlobals->curtime + flFlameFrequency;
+	float flFlameBurnTime = pCond->args.ArgC() > 2 ? atof(pCond->args[2]) : gpGlobals->curtime + flFlameFrequency;
 
 	CCondPlayer *pOwner = pCond->GetOuter();
 	

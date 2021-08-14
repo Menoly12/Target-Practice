@@ -68,8 +68,8 @@ public:
 	// May be used in conjuction with CCommand to create a list of vars ( See the Burning Cond as an example ) - Kay
 	char *GetString(void);
 
-	void SetVars(char *szVars){ Q_strncpy(m_iszVars.GetForModify(), szVars ? szVars : "", OF_MAX_COND_LENGHT); }
-	void SetVars(const char *szVars){ Q_strncpy(m_iszVars.GetForModify(), szVars ? szVars : "", OF_MAX_COND_LENGHT); }
+	void SetVars(char *szVars){ Q_strncpy(m_iszVars.GetForModify(), szVars ? szVars : "", OF_MAX_COND_LENGHT); args.Tokenize( m_iszVars ); }
+	void SetVars(const char *szVars){ Q_strncpy(m_iszVars.GetForModify(), szVars ? szVars : "", OF_MAX_COND_LENGHT); args.Tokenize( m_iszVars ); }
 
 	CBaseEntity	*GetProvider(){ return m_hProvider; }
 	void SetProvider(CBaseEntity *pProvider){ m_hProvider = pProvider; };
@@ -88,6 +88,11 @@ public:
 
 public:
 	COFCondManager *m_pManager;
+
+	// Despite the name CCommand is not a command 
+	// but rather a list of strings containing arguments
+	// name formatting for these is usually without the m_ part
+	CCommand		args;
 // Scrapped atm, formerly assigned to a think function when the Cond was created
 // Currently replaced by just referencing the func array itself - Kay
 //private:
