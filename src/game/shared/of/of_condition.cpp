@@ -236,8 +236,8 @@ void COFCondManager::RemoveAllCond( CBaseEntity *pProvider /* = NULL */ )
 	{
 		if( !pProvider || m_hPlayerCond[i].GetProvider() == pProvider )
 		{
-			m_pOuter->m_Shared.OnConditionRemoved( m_hPlayerCond[i].GetID() );
 			m_hPlayerCond.Remove( i );
+			m_pOuter->m_Shared.OnConditionRemoved( m_hPlayerCond[i].GetID() );
 		}
 	}
 }
