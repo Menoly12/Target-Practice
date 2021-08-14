@@ -220,8 +220,8 @@ void COFCondManager::RemoveCondSeed( int iSeed )
 		if( m_hPlayerCond[i].GetSeed() == iSeed )
 		{
 			nCond = m_hPlayerCond[i].GetID();
-			m_pOuter->m_Shared.OnConditionRemoved( nCond );
 			m_hPlayerCond.FastRemove(i);
+			m_pOuter->m_Shared.OnConditionRemoved( nCond );
 			break;
 		}
 	}
