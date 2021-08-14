@@ -3,6 +3,8 @@
 // Author(s): ficool2, Fenteale, Kay, Ms, Cherry!
 //
 
+#pragma once
+
 #include "shareddefs.h"
 #include "mp_shareddefs.h"
 
@@ -191,6 +193,7 @@ enum
 // https://csrd.science/misc/datadump/current/tf_conds.txt
 enum ETFCond
 {
+	TF_COND_NONE = -1,
 	TF_COND_AIMING = 0,		// Sniper aiming, Heavy minigun.
 	TF_COND_ZOOMED,
 	TF_COND_DISGUISING,

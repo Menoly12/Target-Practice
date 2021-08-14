@@ -52,7 +52,6 @@
 #endif
 
 #if defined(OF_CLIENT_DLL) || defined(OF_DLL)
-	#include "of_shareddefs.h"
 	#include "of_gamerules.h"
 #endif
 

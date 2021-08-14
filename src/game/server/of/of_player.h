@@ -64,6 +64,7 @@ public:
 	CBaseEntity *EntSelectSpawnPoint();
 	bool SelectSpawnSpotByType(char * type, CBaseEntity* &param_2);
 	
+	void PreThink();
 	void PostThink();
 
 	COFWeaponBase *GetActiveOFWeapon() const;

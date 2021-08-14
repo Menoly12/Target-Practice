@@ -4,7 +4,6 @@
 //
 
 #include "cbase.h"
-#include "of_shareddefs.h"
 #include "player_command.h"
 #include "igamemovement.h"
 #include "in_buttons.h"

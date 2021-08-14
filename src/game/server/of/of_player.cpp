@@ -148,6 +148,9 @@ COFPlayer::COFPlayer()
 	UseClientSideAnimation();
 
 	m_bFlipViewModel = false;
+
+	m_Shared.m_pOuter = this;
+	m_Shared.m_Conds.m_pOuter = this;
 }
 
 bool COFPlayer::m_bOFPlayerNeedsPrecache { true };
@@ -310,6 +313,13 @@ void COFPlayer::Spawn()
 	ClearZoomOwner();
 	SetFOV(this, 0);
 	SetViewOffset(GetClassEyeHeight());
+}
+
+void COFPlayer::PreThink()
+{
+	BaseClass::PreThink();
+
+	m_Shared.SharedThink();
 }
 
 void COFPlayer::PostThink()
@@ -944,6 +954,25 @@ bool COFPlayer::ClientCommand( const CCommand& args )
 	else if( FStrEq( args[0], "joinclass" ) && args.ArgC() >= 2 )
 	{
 		HandleCommand_JoinClass(args[1]);
+		return true;
+	}
+	else if( FStrEq( args[0], "addcond" ) && args.ArgC() >= 2 )
+	{
+		if( !sv_cheats->GetBool() )
+			return true;
+
+		ETFCond nCond = (ETFCond)atoi(args[1]);
+		float flDuration = args.ArgC() > 2 ? atof(args[2]) : PERMANENT_LENGHT;
+		m_Shared.m_Conds.AddCond(nCond, flDuration);
+		return true;
+	}
+	else if( FStrEq( args[0], "removecond" ) && args.ArgC() >= 2 )
+	{
+		if( !sv_cheats->GetBool() )
+			return true;
+
+		ETFCond nCond = (ETFCond)atoi(args[1]);
+		m_Shared.m_Conds.RemoveCond(nCond);
 		return true;
 	}
 
