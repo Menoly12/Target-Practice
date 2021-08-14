@@ -227,6 +227,21 @@ void COFCondManager::RemoveCondSeed( int iSeed )
 	}
 }
 
+//-----------------------------------------------------------------------------
+// Purpose: Remove all conditions
+//-----------------------------------------------------------------------------
+void COFCondManager::RemoveAllCond( CBaseEntity *pProvider /* = NULL */ )
+{
+	FOR_EACH_VEC_BACK( m_hPlayerCond, i )
+	{
+		if( !pProvider || m_hPlayerCond[i].GetProvider() == pProvider )
+		{
+			m_pOuter->m_Shared.OnConditionRemoved( m_hPlayerCond[i].GetID() );
+			m_hPlayerCond.Remove( i );
+		}
+	}
+}
+
 COFCondition *COFCondManager::GetCond( ETFCond nCond, CBaseEntity *pProvider /* = NULL*/, COFCondition *pPrevious /*= NULL*/ )
 {
 	for( int i = pPrevious ? max(m_hPlayerCond.Find(*pPrevious), 0) : 0; i < m_hPlayerCond.Count(); i++ )

@@ -123,7 +123,7 @@ public:
 
 	COFCondition *GetCond( ETFCond nCond, CBaseEntity *pProvider = NULL, COFCondition *pPrevious = NULL );
 	bool		InCond( ETFCond nCond );
-	void		RemoveAllCond( CCondPlayer *pPlayer );
+	void		RemoveAllCond( CBaseEntity *pProvider = NULL );
 	float		GetConditionDuration( ETFCond nCond );
 
 	// OF-RE: Possibly move OnConditionAdded and OnConditionRemoved into here?
