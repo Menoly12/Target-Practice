@@ -11,6 +11,14 @@
 	#define COFPlayer C_OFPlayer
 #endif
 
+// Client specific.
+#ifdef CLIENT_DLL
+EXTERN_RECV_TABLE(DT_OFPlayerShared);
+// Server specific.
+#else
+EXTERN_SEND_TABLE(DT_OFPlayerShared);
+#endif
+
 class COFPlayer;
 
 class COFPlayerShared

@@ -132,6 +132,7 @@ IMPLEMENT_SERVERCLASS_ST(COFPlayer, DT_OF_Player)
 	SendPropExclude("DT_BaseFlex", "m_viewtarget "),
 
 	SendPropDataTable(SENDINFO_DT(m_Class), &REFERENCE_SEND_TABLE(DT_OFPlayerClassShared)),
+	SendPropDataTable(SENDINFO_DT(m_Shared), &REFERENCE_SEND_TABLE(DT_OFPlayerShared)),
 	SendPropDataTable("oflocaldata", 0, &REFERENCE_SEND_TABLE(DT_OFLocalPlayerExclusive), SendProxy_SendLocalDataTable),
 	SendPropDataTable("ofnonlocaldata", 0, &REFERENCE_SEND_TABLE(DT_OFNonLocalPlayerExclusive), SendProxy_SendNonLocalDataTable),
 END_SEND_TABLE()

@@ -120,6 +120,7 @@ BEGIN_RECV_TABLE_NOBASE(C_OFPlayer, DT_OFNonLocalPlayerExclusive)
 END_RECV_TABLE()
 
 IMPLEMENT_CLIENTCLASS_DT(C_OFPlayer, DT_OF_Player, COFPlayer)
+	RecvPropDataTable(RECVINFO_DT(m_Shared), 0, &REFERENCE_RECV_TABLE(DT_OFPlayerShared)),
 	RecvPropDataTable(RECVINFO_DT(m_Class), 0, &REFERENCE_RECV_TABLE(DT_OFPlayerClassShared)),
 	RecvPropDataTable("oflocaldata", 0, 0, &REFERENCE_RECV_TABLE(DT_OFLocalPlayerExclusive)),
 	RecvPropDataTable("ofnonlocaldata", 0, 0, &REFERENCE_RECV_TABLE(DT_OFNonLocalPlayerExclusive)),
