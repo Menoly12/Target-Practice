@@ -60,7 +60,13 @@ float COFPlayerShared::GetCritMult()
 	return (flCritCalc * 3.0) + 1.0;
 }
 
+//OFSTATUS: INCOMPLETE
+// NOTENOTE: With the new cond system, you can have the same cond multiple times
+// Every instance getting added will trigger this
+// So make sure if you want something to trigger only once, for example burning particles
+// Check if you have it already
 
+// The same thing goes for OnConditionRemoved
 void COFPlayerShared::OnConditionAdded( ETFCond nCond )
 {
 /*
