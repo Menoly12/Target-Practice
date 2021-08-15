@@ -102,10 +102,10 @@ bool COFMinigun::CanHolster() const
 	if (pPlayer)
 	{
 		// OFTODO: conditionsss
-		//if (pPlayer->m_Shared.InCond(TF_COND_MELEE_ONLY))
-		//{
-		//	return true;
-		//}
+		if (pPlayer->m_Shared.InCond(OF_COND_MELEE_ONLY))
+		{
+			return true;
+		}
 	}
 
 	//if ("mod_minigun_can_holster_while_spinning")
@@ -623,7 +623,7 @@ void COFMinigun::SpinUp()
 
 	SendWeaponAnim(ACT_MP_ATTACK_STAND_PREFIRE);
 	SetWeaponState(OF_MINIGUNSTATE_BEGINFIRE);
-	//pPlayer->m_Shared.AddCond(TF_COND_AIMING);
+	pPlayer->m_Shared.AddCond(OF_COND_AIMING);
 
 	#ifdef CLIENT_DLL
 		WeaponSoundUpdate();
@@ -646,7 +646,7 @@ void COFMinigun::SpinDown()
 
 	SendWeaponAnim(ACT_MP_ATTACK_STAND_POSTFIRE);
 	SetWeaponState(OF_MINIGUNSTATE_SPINUP);
-	//pPlayer->m_Shared.RemoveCond(TF_COND_AIMING);
+	pPlayer->m_Shared.RemoveCond(OF_COND_AIMING);
 
 	#ifdef CLIENT_DLL
 		WeaponSoundUpdate();

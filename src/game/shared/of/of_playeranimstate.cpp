@@ -153,8 +153,7 @@ void COFPlayerAnimState::DoAnimationEvent( PlayerAnimEvent_t event, int nData )
 					RestartGesture(GESTURE_SLOT_ATTACK_AND_RELOAD, activity);
 				}
 			}
-			// OFTODO: DONT FORGET TO UNCOMMENT ONCE CONDITIONS ARE ADDED
-			else if (bWeaponIsSniperRifle)// && m_pOFPlayer->InCond(TF_COND_ZOOMED))
+			else if (bWeaponIsSniperRifle && m_pOFPlayer->m_Shared.InCond(OF_COND_ZOOMED))
 			{
 				if (GetBasePlayer()->GetFlags() & FL_DUCKING)
 				{
@@ -311,14 +310,14 @@ void COFPlayerAnimState::DoAnimationEvent( PlayerAnimEvent_t event, int nData )
 			//ACT_MP_GESTURE_VC_FINGERPOINT_BUILDING
 
 			// OFTODO: CONDITIONS!
-			//if (m_pOFPlayer->m_Shared.IsLoser())
-			//{
-			//	RestartGesture(GESTURE_SLOT_JUMP, ACT_MP_DOUBLEJUMP_LOSERSTATE);
-			//}
-			//else
-			//{
-			RestartGesture(GESTURE_SLOT_JUMP, ACT_MP_DOUBLEJUMP);
-			//}
+			if (m_pOFPlayer->m_Shared.IsLoser())
+			{
+				RestartGesture(GESTURE_SLOT_JUMP, ACT_MP_DOUBLEJUMP_LOSERSTATE);
+			}
+			else
+			{
+				RestartGesture(GESTURE_SLOT_JUMP, ACT_MP_DOUBLEJUMP);
+			}
 
 			break;
 		}
@@ -364,14 +363,13 @@ bool COFPlayerAnimState::HandleMoving(Activity &idealActivity)
 		field_0xfc = 0.0;
 	}
 
-	//if (m_pOFPlayer->m_Shared.IsLoser())
-	//{
-	//	return BaseClass::HandleMoving(idealActivity);
-	//}
+	if (m_pOFPlayer->m_Shared.IsLoser())
+	{
+		return BaseClass::HandleMoving(idealActivity);
+	}
 
-	// OFTODO: conditions :v
-	//if (m_pOFPlayer->m_Shared.IsAiming())
-	if (false)
+	// IsAiming is just for some econ weapon, so just do this:
+	if (m_pOFPlayer->m_Shared.InCond(OF_COND_AIMING))
 	{
 		if (MOVING_MINIMUM_SPEED < flSpeed)
 		{
@@ -392,4 +390,55 @@ bool COFPlayerAnimState::HandleMoving(Activity &idealActivity)
 	}
 
 	return true;
+}
+
+bool COFPlayerAnimState::HandleDucking(Activity &idealActivity)
+{
+	bool bIsDucking = m_pOFPlayer->GetFlags() & FL_DUCKING ? true : false;
+
+	if (bIsDucking && 0 > SelectWeightedSequence(TranslateActivity(ACT_MP_CROUCHWALK)) && !m_pOFPlayer->m_Shared.IsLoser())
+	{
+		bIsDucking = false;
+	}
+
+	if (bIsDucking)
+	{
+		float flSpeed = GetOuterXYSpeed();
+		if (MOVING_MINIMUM_SPEED < flSpeed && !m_pOFPlayer->m_Shared.IsLoser())
+		{
+			// it's either m_iAirDash or m_iAirDucked, im not sure
+			//if (m_pOFPlayer->m_Shared.X > 0)
+			//{
+			//	idealActivity = ACT_MP_DOUBLEJUMP_CROUCH;
+			//}
+			//else
+			{
+				idealActivity = ACT_MP_CROUCHWALK;
+			}
+
+			if (m_pOFPlayer->m_Shared.InCond(OF_COND_AIMING))
+			{
+				COFWeaponBase *pWeapon = m_pOFPlayer->GetActiveOFWeapon();
+				if (pWeapon && pWeapon->GetWeaponID() != OF_WEAPON_MINIGUN)
+				{
+					idealActivity = ACT_MP_CROUCH_DEPLOYED;
+				}
+			}
+		}
+		else
+		{
+			if (m_pOFPlayer->m_Shared.InCond(OF_COND_AIMING) || gpGlobals->curtime < field_0xfc)
+			{
+				idealActivity = ACT_MP_CROUCH_DEPLOYED_IDLE;
+			}
+			else
+			{
+				idealActivity = ACT_MP_CROUCH_IDLE;
+			}
+		}
+
+		return true;
+	}
+
+	return false;
 }

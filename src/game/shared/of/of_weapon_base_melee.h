@@ -45,17 +45,17 @@ public:
 	virtual void DoViewModelAnimation();
 	virtual bool CanBeSelected() { return true; }
 	virtual OFWeaponID GetWeaponID() { return WEAPON_NONE; }
-	virtual float GetMeleeDamage(CBaseEntity *param_1, int *param_2, int *param3); // are these really pointers?
+	virtual float GetMeleeDamage(CBaseEntity *pTarget, int *iDamageType, int *iDamageCustom);
 	virtual float GetSmackTime(int iWeaponMode) { return GetOFWpnData().m_WeaponModeInfo[iWeaponMode].m_flSmackDelay; }
 	virtual int GetSwingRange() { return 48; } // removed sword checks
-	virtual int GetDamageCustom() { return 0; } // OFTODO: figure out the values
+	virtual int GetDamageCustom() { return OF_CUSTOMDAMAGE_TYPE0; } // OFTODO: figure out the values
 	virtual float GetForceScale();
 	virtual bool CanCritFromBehind() { return false; } // OFTODO: when attributes get added, add a check here
 	virtual bool HasPrimaryAmmo() { return true; }
 	virtual void OnEntityHit(CBaseEntity *pEntity, CTakeDamageInfo *damageInfo) {}
 	virtual void SendPlayerAnimEvent(COFPlayer *pPlayer);
 
-private:
+protected:
 
 	float m_flSmackTime;
 	bool field_0x7e4;

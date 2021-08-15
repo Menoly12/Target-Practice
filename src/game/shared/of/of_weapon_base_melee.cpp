@@ -4,9 +4,9 @@
 //
 
 #include "cbase.h"
+#include "of_shareddefs.h"
 #include "of_weapon_base.h"
 #include "of_weapon_base_melee.h"
-#include "of_shareddefs.h"
 
 #ifdef CLIENT_DLL
 
@@ -382,7 +382,7 @@ void COFWeaponBaseMelee::SendPlayerAnimEvent(COFPlayer *pPlayer)
 }
 
 // attributes! all cut!
-float COFWeaponBaseMelee::GetMeleeDamage(CBaseEntity *param_1, int *param_2, int *param3)
+float COFWeaponBaseMelee::GetMeleeDamage(CBaseEntity *pTarget, int *iDamageType, int *iDamageCustom)
 {
 	return GetOFWpnData().m_WeaponModeInfo[m_iWeaponMode].m_iDamage;
 }

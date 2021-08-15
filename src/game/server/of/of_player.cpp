@@ -132,6 +132,7 @@ IMPLEMENT_SERVERCLASS_ST(COFPlayer, DT_OF_Player)
 	SendPropExclude("DT_BaseFlex", "m_viewtarget "),
 
 	SendPropDataTable(SENDINFO_DT(m_Class), &REFERENCE_SEND_TABLE(DT_OFPlayerClassShared)),
+	SendPropDataTable(SENDINFO_DT(m_Shared), &REFERENCE_SEND_TABLE(DT_OFPlayerShared)),
 	SendPropDataTable("oflocaldata", 0, &REFERENCE_SEND_TABLE(DT_OFLocalPlayerExclusive), SendProxy_SendLocalDataTable),
 	SendPropDataTable("ofnonlocaldata", 0, &REFERENCE_SEND_TABLE(DT_OFNonLocalPlayerExclusive), SendProxy_SendNonLocalDataTable),
 END_SEND_TABLE()
@@ -148,6 +149,9 @@ COFPlayer::COFPlayer()
 	UseClientSideAnimation();
 
 	m_bFlipViewModel = false;
+
+	m_Shared.m_pOuter = this;
+	m_Shared.m_Conds.m_pOuter = this;
 }
 
 bool COFPlayer::m_bOFPlayerNeedsPrecache { true };
@@ -286,10 +290,10 @@ void COFPlayer::Spawn()
 
 	if (m_Shared.GetPlayerState() == TF_STATE_ACTIVE)
 	{
-		//if (m_Shared.InCond(TF_COND_DISGUISED))
-		//{
-		//	m_Shared.RemoveDisguise();
-		//}
+		if (m_Shared.InCond(OF_COND_DISGUISED))
+		{
+			//m_Shared.RemoveDisguise();
+		}
 
 		EmitSound("Player.Spawn");
 
@@ -311,6 +315,14 @@ void COFPlayer::Spawn()
 	SetFOV(this, 0);
 	SetViewOffset(GetClassEyeHeight());
 }
+
+void COFPlayer::PreThink()
+{
+	BaseClass::PreThink();
+
+	m_Shared.SharedThink();
+}
+
 
 void COFPlayer::PostThink()
 {
@@ -944,6 +956,25 @@ bool COFPlayer::ClientCommand( const CCommand& args )
 	else if( FStrEq( args[0], "joinclass" ) && args.ArgC() >= 2 )
 	{
 		HandleCommand_JoinClass(args[1]);
+		return true;
+	}
+	else if( FStrEq( args[0], "addcond" ) && args.ArgC() >= 2 )
+	{
+		if( !sv_cheats->GetBool() )
+			return true;
+
+		EOFCond nCond = (EOFCond)atoi(args[1]);
+		float flDuration = args.ArgC() > 2 ? atof(args[2]) : PERMANENT_LENGTH;
+		m_Shared.m_Conds.AddCond(nCond, flDuration);
+		return true;
+	}
+	else if( FStrEq( args[0], "removecond" ) && args.ArgC() >= 2 )
+	{
+		if( !sv_cheats->GetBool() )
+			return true;
+
+		EOFCond nCond = (EOFCond)atoi(args[1]);
+		m_Shared.m_Conds.RemoveCond(nCond);
 		return true;
 	}
 

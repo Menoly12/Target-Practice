@@ -121,6 +121,7 @@ END_RECV_TABLE()
 
 IMPLEMENT_CLIENTCLASS_DT(C_OFPlayer, DT_OF_Player, COFPlayer)
 	RecvPropDataTable(RECVINFO_DT(m_Class), 0, &REFERENCE_RECV_TABLE(DT_OFPlayerClassShared)),
+	RecvPropDataTable(RECVINFO_DT(m_Shared), 0, &REFERENCE_RECV_TABLE(DT_OFPlayerShared)),
 	RecvPropDataTable("oflocaldata", 0, 0, &REFERENCE_RECV_TABLE(DT_OFLocalPlayerExclusive)),
 	RecvPropDataTable("ofnonlocaldata", 0, 0, &REFERENCE_RECV_TABLE(DT_OFNonLocalPlayerExclusive)),
 END_RECV_TABLE()
@@ -143,6 +144,9 @@ C_OFPlayer::C_OFPlayer() : m_iv_angEyeAngles("C_OFPlayer::m_iv_angEyeAngles")
 {
 	m_PlayerAnimState = CreatePlayerAnimState( this );
 	AddVar(&m_angEyeAngles, &m_iv_angEyeAngles, LATCH_SIMULATION_VAR);
+
+	m_Shared.m_pOuter = this;
+	m_Shared.m_Conds.m_pOuter = this;
 }
 
 void C_OFPlayer::DoAnimationEvent( PlayerAnimEvent_t event, int nData )
@@ -319,6 +323,8 @@ void C_OFPlayer::OnPreDataChanged(DataUpdateType_t updateType)
 	m_iPreDataChangeClass = m_Class.m_iClass;
 
 	m_iPreDataChangeTeam = GetTeamNumber(); // 0x2068
+
+	m_Shared.OnPreDataChanged();
 }
 
 // OFSTATUS: VERY INCOMPLETE
@@ -377,6 +383,8 @@ void C_OFPlayer::OnDataChanged(DataUpdateType_t updateType)
 			}
 		}
 	}
+
+	m_Shared.OnDataChanged();
 }
 
 void C_OFPlayer::ValidateModelIndex()

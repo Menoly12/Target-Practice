@@ -30,7 +30,9 @@ public:
 	void DoAnimationEvent( PlayerAnimEvent_t event, int nData = 0 ); // This is called by both the client and the server in the same way to trigger events for players
 	Activity TranslateActivity(Activity actDesired);
 	void RestartGesture(int iGesture, Activity iGestureActivity, bool bAutoKill = true);
+
 	bool HandleMoving(Activity &idealActivity);
+	bool HandleDucking(Activity &idealActivity);
 
 private:
 

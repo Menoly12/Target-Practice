@@ -249,8 +249,8 @@ bool COFWeaponBase::Deploy()
 
 	if (bDeploy)
 	{
-		m_flNextPrimaryAttack = max(_flNextPrimaryAttack, gpGlobals->curtime);
-		m_flNextSecondaryAttack = max(_flNextSecondaryAttack, gpGlobals->curtime);
+		m_flNextPrimaryAttack = Max(_flNextPrimaryAttack, gpGlobals->curtime);
+		m_flNextSecondaryAttack = Max(_flNextSecondaryAttack, gpGlobals->curtime);
 		m_flLastDeployTime = gpGlobals->curtime;
 	}
 
@@ -1447,10 +1447,12 @@ void COFWeaponBase::CalcIsAttackCritical()
 		return;
 	}
 
-	if (AreRandomCritsEnabled())
-	{
-		m_bAttackCritical = CalcIsAttackCriticalHelper();
-	}
+	// disabling this as within calcisattackcriticalhelper it's already doing the check
+	// and example: the spy knife still crits from behind when random crits are disabled
+	//if (AreRandomCritsEnabled())
+	//{
+	m_bAttackCritical = CalcIsAttackCriticalHelper();
+	//}
 }
 
 //OFSTATUS: COMPLETE

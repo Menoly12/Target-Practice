@@ -3,7 +3,6 @@
 // Author(s): Nopey, Fenteale
 //
 #include "cbase.h"
-#include "of_shareddefs.h"
 #ifdef CLIENT_DLL
 #include "c_of_player.h"
 #else

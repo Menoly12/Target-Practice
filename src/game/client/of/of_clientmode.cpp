@@ -13,6 +13,7 @@
 #include "panelmetaclassmgr.h"
 #include "hud_element_helper.h"
 #include "GameUI/IGameUI.h"
+#include "c_of_player.h"
 
 extern ConVar v_viewmodel_fov;
 extern ConVar r_drawviewmodel;
@@ -162,12 +163,11 @@ float ClientModeOFNormal::GetViewModelFOV()
 // OFSTATUS: COMPLETE
 bool ClientModeOFNormal::ShouldDrawViewModel()
 {
-	// OFTODO: requires cond system
-	//COFPlayer *pOFPlayer = COFPlayer::GetLocalOFPlayer();
-	//if (pOFPlayer && pOFPlayer->m_Shared.InCond(TF_COND_ZOOMED))
-	//{
-	//	return false;
-	//}
+	COFPlayer *pOFPlayer = COFPlayer::GetLocalOFPlayer();
+	if (pOFPlayer && pOFPlayer->m_Shared.InCond(OF_COND_ZOOMED))
+	{
+		return false;
+	}
 
 	return r_drawviewmodel.GetBool();
 }
@@ -175,12 +175,11 @@ bool ClientModeOFNormal::ShouldDrawViewModel()
 // OFSTATUS: COMPLETE
 bool ClientModeOFNormal::ShouldDrawCrosshair()
 {
-	// OFTODO: requires cond system
-	//COFPlayer *pOFPlayer = COFPlayer::GetLocalOFPlayer();
-	//if (pOFPlayer && pOFPlayer->m_Shared.InCond(TF_COND_ZOOMED))
-	//{
-	//	return false;
-	//}
+	COFPlayer *pOFPlayer = COFPlayer::GetLocalOFPlayer();
+	if (pOFPlayer && pOFPlayer->m_Shared.InCond(OF_COND_ZOOMED))
+	{
+		return false;
+	}
 
 	return BaseClass::ShouldDrawCrosshair();
 }

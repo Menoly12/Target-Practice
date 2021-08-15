@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "of_shareddefs.h"
+
 struct  OFPlayerClassData_t
 {
 	char			m_szName[128];

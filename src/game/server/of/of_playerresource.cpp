@@ -14,7 +14,7 @@ IMPLEMENT_SERVERCLASS_ST(COFPlayerResource, DT_OFPlayerResource)
 	SendPropArray3(SENDINFO_ARRAY3(m_iTotalScore), SendPropInt(SENDINFO_ARRAY(m_iTotalScore), -1, SPROP_VARINT | SPROP_UNSIGNED)),
 	SendPropArray3(SENDINFO_ARRAY3(m_iMaxHealth), SendPropInt(SENDINFO_ARRAY(m_iMaxHealth), -1, SPROP_VARINT | SPROP_UNSIGNED)),
 	SendPropArray3(SENDINFO_ARRAY3(m_iMaxBuffedHealth), SendPropInt(SENDINFO_ARRAY(m_iMaxBuffedHealth), -1, SPROP_VARINT | SPROP_UNSIGNED)),
-	SendPropArray3(SENDINFO_ARRAY3(m_iPlayerClass), SendPropInt(SENDINFO_ARRAY(m_iPlayerClass), 6, SPROP_UNSIGNED)), // OFINFO: bumping this up to 6 for those insane people who want a bunch of classes for whatever reason
+	SendPropArray3(SENDINFO_ARRAY3(m_iPlayerClass), SendPropInt(SENDINFO_ARRAY(m_iPlayerClass), Q_log2(OF_CLASS_COUNT) + 1, SPROP_UNSIGNED)),
 	SendPropArray3(SENDINFO_ARRAY3(m_bArenaSpectator), SendPropInt(SENDINFO_ARRAY(m_bArenaSpectator), 1, SPROP_UNSIGNED)),
 	SendPropArray3(SENDINFO_ARRAY3(m_iActiveDominations), SendPropInt(SENDINFO_ARRAY(m_iActiveDominations), 6, SPROP_UNSIGNED)),
 END_SEND_TABLE()
