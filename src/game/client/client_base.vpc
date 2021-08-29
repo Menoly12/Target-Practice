@@ -6,6 +6,7 @@
 //-----------------------------------------------------------------------------
 // Open Fortress Modifications (CC-BY-NC-CA)
 // * Remove replay and sixense code
+// * Added classmenu.h and classmenu.cpp game controls
 
 
 $Macro OUTBINNAME	"client"
@@ -550,6 +551,8 @@ $Project
 			$File	"game_controls\teammenu.cpp"
 			$File	"game_controls\vguitextwindow.cpp"
 			$File	"game_controls\IconPanel.cpp"
+			$File	"game_controls\classmenu.cpp"
+			$File	"game_controls\classmenu.h"
 		}
 
 	}

@@ -154,13 +154,13 @@ BEGIN_PREDICTION_DATA( COFWeaponBase )
 	DEFINE_PRED_FIELD( m_iReloadStage, FIELD_INTEGER, FTYPEDESC_INSENDTABLE ),
 	DEFINE_PRED_FIELD( m_bAnimReload, FIELD_BOOLEAN, FTYPEDESC_INSENDTABLE ),
 	DEFINE_PRED_FIELD( m_flOldPrimaryAttack, FIELD_FLOAT, FTYPEDESC_INSENDTABLE ),
-    DEFINE_PRED_FIELD( m_flTimeWeaponIdle, FIELD_FLOAT, FTYPEDESC_OVERRIDE | FTYPEDESC_NOERRORCHECK ),
+	DEFINE_PRED_FIELD( m_flTimeWeaponIdle, FIELD_FLOAT, FTYPEDESC_OVERRIDE | FTYPEDESC_NOERRORCHECK ),
+	DEFINE_PRED_FIELD( m_iCritSeed, FIELD_INTEGER, 0 ),
 END_PREDICTION_DATA()
 #endif
 
 // Do we need this? Weapon bases never get used on their own - Kay
 LINK_ENTITY_TO_CLASS( tf_weapon_base, COFWeaponBase );
-
 
 #ifdef GAME_DLL
 
@@ -1435,6 +1435,8 @@ void COFWeaponBase::CalcIsAttackCritical()
 {
 	COFPlayer *pPlayer = GetOFPlayerOwner();
 	if (!pPlayer) return;
+
+	//DevMsg("frame! || Current : %i , Last: %i\n", gpGlobals->framecount, m_iLastCritCheck);
 
 	if (gpGlobals->framecount == m_iLastCritCheck) return;
 	m_iLastCritCheck = gpGlobals->framecount;

@@ -126,6 +126,10 @@ public:
 	virtual bool IsPlayingMedievalMode() { return m_bPlayingMedieval; }
 	virtual int GetTimeLeft();
 
+#ifdef CLIENT_DLL
+	virtual const char *GetVideoFileForMap(bool bAddFileType = true);
+#endif
+
 private:
 
 	CHandle<COFGameRulesProxy>	m_hOFGameRulesProxy;

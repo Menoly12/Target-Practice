@@ -58,6 +58,11 @@ enum OF_Collision_Group_t
 #define CONTENTS_TEAMRED CONTENTS_TEAM1
 #define CONTENTS_TEAMBLUE CONTENTS_TEAM2
 
+#define PANEL_MAPINFO "mapinfo"
+#define PANEL_CLASS_RED "class_red"
+#define PANEL_CLASS_BLUE "class_blue"
+#define PANEL_ROUNDINFO "roundinfo"
+
 enum OFPlayerState
 {
 	TF_STATE_ACTIVE,
@@ -193,7 +198,9 @@ enum
 	OF_CLASS_ENGINEER,
 
 	OF_CLASS_CIVILIAN,
-	OF_CLASS_COUNT
+	OF_CLASS_COUNT,
+
+	OF_CLASS_RANDOM
 };
 
 // not all of these exist, compatibility only
@@ -424,5 +431,8 @@ extern float PackRatios[];
 extern const char *g_aRawPlayerClassNamesShort[];
 
 // Map Defines
-extern const char* s_ValveMaps[][3];
-extern const char* s_CommunityMaps[][3];
+//extern mapInfo s_ValveMaps[];
+//extern mapInfo s_CommunityMaps[];
+
+const char* GetMapDisplayName(const char* map);
+const char* GetMapType(const char* map);

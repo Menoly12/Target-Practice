@@ -56,6 +56,8 @@ $Project
 			$File	"$SHARED/of/of_weapon_rocketlauncher.h"
 			$File	"$SHARED/of/of_weapon_knife.cpp"
 			$File	"$SHARED/of/of_weapon_knife.h"
+			$File	"$SHARED/of/of_weapon_fireaxe.cpp"
+			$File	"$SHARED/of/of_weapon_fireaxe.h"
 			$File	"$SHARED/of/of_weapon_grenadeproj_pipebomb.cpp"
 			$File	"$SHARED/of/of_weapon_grenadeproj_pipebomb.h"
 			$File	"$SHARED/of/of_projectile_rocket.cpp"

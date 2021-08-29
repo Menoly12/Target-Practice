@@ -345,6 +345,13 @@ bool COFWeaponBaseMelee::CalcIsAttackCriticalHelper()
 	int iRandom = 0;
 
 	iRandom = RandomInt(0, OF_WEAPON_RANDOM_RANGE - 1);
+	
+#ifdef GAME_DLL
+	//DevMsg("SERVER: %i | %f | %i | %i\n", iSeed, flCritMult, iRandom, (iRandom < (OF_WEAPON_CRIT_CHANCE_MELEE * flCritMult) * OF_WEAPON_RANDOM_RANGE));
+#else
+	//DevMsg("CLIENT: %i | %f | %i | %i\n", iSeed, flCritMult, iRandom, (iRandom < (OF_WEAPON_CRIT_CHANCE_MELEE * flCritMult) * OF_WEAPON_RANDOM_RANGE));
+#endif
+
 	return iRandom < (OF_WEAPON_CRIT_CHANCE_MELEE * flCritMult) * OF_WEAPON_RANDOM_RANGE;
 }
 

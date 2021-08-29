@@ -941,11 +941,15 @@ void COFPlayer::PrecachePlayerModels()
 }
 
 
-//OFSTATUS: Incomplete, only handles jointeam and in jointeam it only handles actual numbers.
+//OFSTATUS: Incomplete
 bool COFPlayer::ClientCommand( const CCommand& args )
 {
-
-	if ( FStrEq( args[0], "jointeam" ) && args.ArgC() >= 2 )
+	if ( FStrEq(args[0], "team_ui_setup" ) )
+	{
+		ShowViewPortPanel(PANEL_TEAM);
+		return true;
+	}
+	else if ( FStrEq( args[0], "jointeam" ) && args.ArgC() >= 2 )
 	{
 		if (args.ArgC() >= 2)
 		{
@@ -1090,7 +1094,7 @@ void COFPlayer::HandleCommand_JoinTeam(const char* arg)
 
 		//if (OFGameRules()->IsInArenaMode() && m_bArenaSpectator)
 		//{
-		//	ShowViewPortPanel("class_blue");
+		//	ShowViewPortPanel(PANEL_CLASSBLUE);
 		//}
 	}
 	else
@@ -1099,7 +1103,7 @@ void COFPlayer::HandleCommand_JoinTeam(const char* arg)
 
 		if (OFGameRules()->WouldChangeUnbalanceTeams(iTeam, GetTeamNumber()))
 		{
-			ShowViewPortPanel("team");
+			ShowViewPortPanel(PANEL_TEAM);
 			return;
 		}
 
@@ -1107,7 +1111,19 @@ void COFPlayer::HandleCommand_JoinTeam(const char* arg)
 
 		// tf_arena_force_class.GetBool()
 
-		ShowViewPortPanel((iTeam == OF_TEAM_RED) ? "class_red" : "class_blue");
+		//ShowViewPortPanel((iTeam == OF_TEAM_RED) ? PANEL_CLASS_RED : PANEL_CLASS_BLUE);
+		switch (iTeam)
+		{
+		case OF_TEAM_RED:
+			ShowViewPortPanel(PANEL_CLASS_RED);
+			break;
+		case OF_TEAM_BLUE:
+			ShowViewPortPanel(PANEL_CLASS_BLUE);
+			break;
+		default:
+			DevWarning("No team class select panel!\n");
+			break;
+		}
 	}
 
 	/*
@@ -1124,7 +1140,10 @@ void COFPlayer::HandleCommand_JoinTeam(const char* arg)
 //OFSTATUS: Incomplete, all placeholder
 void COFPlayer::HandleCommand_JoinClass(const char* arg)
 {
-	int iClass = UTIL_StringFieldToInt(arg, g_aRawPlayerClassNamesShort, OF_CLASS_COUNT);
+	int iClass = -1;
+	iClass = UTIL_StringFieldToInt(arg, g_aRawPlayerClassNamesShort, OF_CLASS_COUNT);
+
+	if (iClass == -1) return;
 
     if( m_Class.m_iClass != iClass )
     {

@@ -14,10 +14,10 @@ public:
 	COFButton(Panel* parent, const char* panelName, const char* text);
 	COFButton(Panel* parent, const char* panelName, const wchar_t* text);
 
-	void ApplySettings(KeyValues *pKey);
-	void SetFontStr(const char *pchar);
-	void SetColorStr(const char *pchar);
-	vgui::IBorder *GetBorder(bool depressed, bool armed, bool selected, bool keyfocus);
+	virtual void ApplySettings(KeyValues *pKey);
+	virtual void SetFontStr(const char *pchar);
+	virtual void SetColorStr(const char *pchar);
+	virtual vgui::IBorder *GetBorder(bool depressed, bool armed, bool selected, bool keyfocus);
 
 private:
 

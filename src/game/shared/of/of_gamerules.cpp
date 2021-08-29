@@ -1223,6 +1223,28 @@ int COFGameRules::GetTimeLeft()
 	return (iTime);
 }
 
+#ifdef CLIENT_DLL
+
+const char *COFGameRules::GetVideoFileForMap(bool bAddFileType)
+{
+	char mapname[MAX_MAP_NAME];
+	V_FileBase(engine->GetLevelName(), mapname, sizeof(mapname));
+
+	if (!mapname) return NULL;
+
+	V_strlower(mapname);
+
+	static char videopath[MAX_PATH];
+	V_strncpy(videopath, "media/", sizeof(videopath));
+	V_strncat(videopath, mapname, sizeof(videopath));
+
+	if (bAddFileType) V_strncat(videopath, ".bik", sizeof(videopath));
+
+	return videopath;
+}
+
+#endif
+
 // OFSTATUS: INCOMPLETE (theres some kind of holiday calc here)
 void COFGameRules::GoToIntermission( void )
 {

@@ -167,15 +167,70 @@ const char* g_aRawPlayerClassNamesShort[] =
 	"random"
 };
 
-const char* s_ValveMaps[][3] =
+struct mapInfo
 {
-	"ctf_2fort", "2Fort", "#Gametype_CTF",
+	const char *mapName;
+	const char *mapDisplay;
+	const char *mapType;
 };
 
-const char* s_CommunityMaps[][3] =
+// OFINFO: renaming from "s_ValveMaps" to "s_MapInfo"
+// OFTODO: make this a text file
+mapInfo s_MapInfo[] =
 {
-	"pl_borneo", "Borneo", "#Gametype_Escort",
+	{ "ctf_2fort", "2Fort", "#Gametype_CTF" },
+	{ "cp_dustbowl", "Dustbowl", "#TF_AttackDefend" },
+	{ "cp_granary", "Granary", "#Gametype_CP" },
+	{ "cp_well", "Well", "#Gametype_CP" },
+	{ "cp_foundry", "Foundry", "#Gametype_CP" },
+	{ "cp_gravelpit", "Gravel Pit", "#TF_AttackDefend" },
 };
+
+//mapInfo s_CommunityMaps[] =
+//{
+//};
+
+const char* GetMapDisplayName(const char* map)
+{
+	static char szDisplayName[256];
+	static char szMapName[256];
+	szDisplayName[0] = '\0';
+
+	if (!map) return szDisplayName;
+
+	V_strncpy(szMapName, map, sizeof(szMapName));
+	V_strlower(szMapName);
+
+	// look in s_MapInfo if there's a display name
+	for (int i = 0; i < ARRAYSIZE(s_MapInfo); i++)
+	{
+		if (V_stricmp(s_MapInfo[i].mapName, szMapName) == 0)
+		{
+			return s_MapInfo[i].mapDisplay;
+		}
+	}
+
+	// look in communitymaps if there's a display name
+	//for (int i = 0; i < ARRAYSIZE(s_CommunityMaps); i++)
+	//{
+	//	if (V_stricmp(s_CommunityMaps[i].mapName, szMapName) == 0)
+	//	{
+	//		return s_CommunityMaps[i].mapDisplay;
+	//	}
+	//}
+
+	// V_strtitlecase doesnt exist :v
+
+	V_strupr(szMapName);
+
+	return szMapName;
+}
+
+// OFSTATUS: INCOMPLETE, placeholder
+const char* GetMapType(const char* map)
+{
+	return "#Gametype_CTF";
+}
 
 const char* s_aGameTypeNames[] =
 {

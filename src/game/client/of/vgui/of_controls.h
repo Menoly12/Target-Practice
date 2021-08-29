@@ -8,3 +8,4 @@
 #include "vgui/of_label.h"
 #include "vgui/of_textwindow.h"
 #include "vgui/of_imagepanel.h"
+#include "vgui/of_richtext.h"

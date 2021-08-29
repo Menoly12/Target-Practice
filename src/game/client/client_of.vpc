@@ -79,12 +79,18 @@ $Project "Client (Open Fortress)"
 			$File	"of/vgui/of_textwindow.h"			
 			$File	"of/vgui/of_mapinfomenu.cpp"
 			$File	"of/vgui/of_mapinfomenu.h"
+			$File	"of/vgui/of_teammenu.cpp"
+			$File	"of/vgui/of_teammenu.h"
+			$File	"of/vgui/of_classmenu.cpp"
+			$File	"of/vgui/of_classmenu.h"
 			$File	"of/vgui/of_button.cpp"
 			$File	"of/vgui/of_button.h"
 			$File	"of/vgui/of_label.cpp"
 			$File	"of/vgui/of_label.h"
 			$File	"of/vgui/of_imagepanel.cpp"
 			$File	"of/vgui/of_imagepanel.h"
+			$File	"of/vgui/of_richtext.cpp"
+			$File	"of/vgui/of_richtext.h"
 		}
 	}
 }
